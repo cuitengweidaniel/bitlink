@@ -276,9 +276,10 @@
                     <span class="text-gasgx-green font-bold">结论：</span> 放弃气价收入换取高比例合资股份，实际入口袋的“真金白银”最高，且资产负债表最优。
                 </div>
             </div>
-            <div class="slide-content">
-                <div class="tech-card flex-grow relative w-full mt-4 p-8 flex flex-col">
-                    <div class="relative w-full h-full flex-grow">
+            <div class="slide-content pb-4">
+                <!-- 修复核心：使用 relative 满充容器 + absolute 定位四边边距，彻底锁死 Chart.js 画布范围 -->
+                <div class="tech-card flex-grow relative w-full mt-2">
+                    <div class="absolute top-8 left-8 right-8 bottom-8">
                         <canvas id="slideWinWinChart"></canvas>
                     </div>
                 </div>
@@ -353,8 +354,9 @@
                                     <p class="text-2xl font-black text-amber-400 glow-text" id="s-val-cash">2001 <span class="text-sm font-normal">万</span></p>
                                 </div>
                             </div>
-                            <div class="tech-panel-inset flex-grow w-full mt-2 p-4 flex flex-col relative">
-                                <div class="relative w-full h-full flex-grow">
+                            <!-- 修复核心：同步修复第5页动态推演舱的图表容器约束 -->
+                            <div class="tech-panel-inset flex-grow relative w-full mt-2">
+                                <div class="absolute top-6 left-6 right-6 bottom-6">
                                     <canvas id="slideDynamicChart"></canvas>
                                 </div>
                             </div>
