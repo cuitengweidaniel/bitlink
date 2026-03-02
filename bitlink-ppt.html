@@ -277,8 +277,8 @@
                 </div>
             </div>
             <div class="slide-content">
-                <div class="tech-card h-[450px] relative w-full mt-4">
-                    <div class="absolute inset-8">
+                <div class="tech-card flex-grow relative w-full mt-4 p-8 flex flex-col">
+                    <div class="relative w-full h-full flex-grow">
                         <canvas id="slideWinWinChart"></canvas>
                     </div>
                 </div>
@@ -304,13 +304,13 @@
                                     <div class="w-1 h-3 bg-gasgx-green mr-2"></div> 供气价格模型 & 气源方占股
                                 </label>
                                 <div class="grid grid-cols-1 gap-2 mb-4">
-                                    <button onclick="window.updateSlideSimulator(3.0, window.currentPwr, window.currentCap)" id="s-gas-3" class="ppt-sim-btn py-2 px-4 text-xs font-bold border border-gasgx-border bg-[#121A28] text-gasgx-textSub flex justify-between cursor-pointer relative hover:brightness-125">
+                                    <button onclick="window.updateSlideSimulator(3.0, window.currentPwr, window.currentCap)" id="s-gas-3" class="ppt-sim-btn py-2 px-4 text-xs font-bold border border-gasgx-border bg-[#121A28] text-gasgx-textSub flex justify-between cursor-pointer relative hover:brightness-125 z-50">
                                         <span>$3/mcf</span><span>无合资 0%</span>
                                     </button>
-                                    <button onclick="window.updateSlideSimulator(0.7, window.currentPwr, window.currentCap)" id="s-gas-07" class="ppt-sim-btn py-2 px-4 text-xs font-bold border border-gasgx-border bg-[#121A28] text-gasgx-textSub flex justify-between cursor-pointer relative hover:brightness-125">
+                                    <button onclick="window.updateSlideSimulator(0.7, window.currentPwr, window.currentCap)" id="s-gas-07" class="ppt-sim-btn py-2 px-4 text-xs font-bold border border-gasgx-border bg-[#121A28] text-gasgx-textSub flex justify-between cursor-pointer relative hover:brightness-125 z-50">
                                         <span>$0.7/mcf</span><span>常规 51%</span>
                                     </button>
-                                    <button onclick="window.updateSlideSimulator(0.0, window.currentPwr, window.currentCap)" id="s-gas-0" class="ppt-sim-btn py-2 px-4 text-xs font-bold border border-gasgx-green bg-gasgx-green/10 text-gasgx-green shadow-[0_0_10px_rgba(0,242,96,0.15)] flex justify-between cursor-pointer relative hover:brightness-125">
+                                    <button onclick="window.updateSlideSimulator(0.0, window.currentPwr, window.currentCap)" id="s-gas-0" class="ppt-sim-btn py-2 px-4 text-xs font-bold border border-gasgx-green bg-gasgx-green/10 text-gasgx-green shadow-[0_0_10px_rgba(0,242,96,0.15)] flex justify-between cursor-pointer relative hover:brightness-125 z-50">
                                         <span>$0/mcf</span><span>深度 70%</span>
                                     </button>
                                 </div>
@@ -319,16 +319,16 @@
                                     <div class="w-1 h-3 bg-gasgx-cyan mr-2"></div> 托管电价 (Power Rate)
                                 </label>
                                 <div class="grid grid-cols-2 gap-2 mb-4">
-                                    <button onclick="window.updateSlideSimulator(window.currentGas, 0.0625, window.currentCap)" id="s-pwr-625" class="ppt-sim-pwr py-2 text-xs font-bold border border-gasgx-cyan bg-gasgx-cyan/10 text-gasgx-cyan cursor-pointer relative hover:brightness-125">6.25 美分</button>
-                                    <button onclick="window.updateSlideSimulator(window.currentGas, 0.07, window.currentCap)" id="s-pwr-700" class="ppt-sim-pwr py-2 text-xs font-bold border border-gasgx-border bg-[#121A28] text-gasgx-textSub cursor-pointer relative hover:brightness-125">7.00 美分</button>
+                                    <button onclick="window.updateSlideSimulator(window.currentGas, 0.0625, window.currentCap)" id="s-pwr-625" class="ppt-sim-pwr py-2 text-xs font-bold border border-gasgx-cyan bg-gasgx-cyan/10 text-gasgx-cyan cursor-pointer relative hover:brightness-125 z-50">6.25 美分</button>
+                                    <button onclick="window.updateSlideSimulator(window.currentGas, 0.07, window.currentCap)" id="s-pwr-700" class="ppt-sim-pwr py-2 text-xs font-bold border border-gasgx-border bg-[#121A28] text-gasgx-textSub cursor-pointer relative hover:brightness-125 z-50">7.00 美分</button>
                                 </div>
 
                                 <label class="flex items-center text-xs font-semibold text-gasgx-textSub mb-3 uppercase tracking-wider">
                                     <div class="w-1 h-3 bg-amber-400 mr-2"></div> 建造成本 (CapEx)
                                 </label>
                                 <div class="grid grid-cols-2 gap-2">
-                                    <button onclick="window.updateSlideSimulator(window.currentGas, window.currentPwr, 4500)" id="s-cap-45" class="ppt-sim-cap py-2 text-xs font-bold border border-gasgx-border bg-[#121A28] text-gasgx-textSub cursor-pointer relative hover:brightness-125">45万/MW</button>
-                                    <button onclick="window.updateSlideSimulator(window.currentGas, window.currentPwr, 3200)" id="s-cap-32" class="ppt-sim-cap py-2 text-xs font-bold border border-amber-400 bg-amber-400/10 text-amber-400 cursor-pointer relative hover:brightness-125">32万/MW</button>
+                                    <button onclick="window.updateSlideSimulator(window.currentGas, window.currentPwr, 4500)" id="s-cap-45" class="ppt-sim-cap py-2 text-xs font-bold border border-gasgx-border bg-[#121A28] text-gasgx-textSub cursor-pointer relative hover:brightness-125 z-50">45万/MW</button>
+                                    <button onclick="window.updateSlideSimulator(window.currentGas, window.currentPwr, 3200)" id="s-cap-32" class="ppt-sim-cap py-2 text-xs font-bold border border-amber-400 bg-amber-400/10 text-amber-400 cursor-pointer relative hover:brightness-125 z-50">32万/MW</button>
                                 </div>
                             </div>
                         </div>
@@ -353,8 +353,8 @@
                                     <p class="text-2xl font-black text-amber-400 glow-text" id="s-val-cash">2001 <span class="text-sm font-normal">万</span></p>
                                 </div>
                             </div>
-                            <div class="tech-panel-inset flex-grow relative mt-2 min-h-[150px]">
-                                <div class="absolute inset-4">
+                            <div class="tech-panel-inset flex-grow w-full mt-2 p-4 flex flex-col relative">
+                                <div class="relative w-full h-full flex-grow">
                                     <canvas id="slideDynamicChart"></canvas>
                                 </div>
                             </div>
@@ -371,10 +371,10 @@
                 <p class="text-gasgx-textSub text-lg mt-3 ml-6">基于最优对赌模型（$0气价，6.25美分电价），建厂成本降低 28.8% 将在各生命周期产生核裂变效应。</p>
             </div>
             <div class="slide-content">
-                <div class="grid grid-cols-4 gap-6 relative">
+                <div class="grid grid-cols-4 gap-6 items-stretch relative">
                     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-amber-400/5 blur-[100px] pointer-events-none"></div>
                     
-                    <div class="tech-panel-inset p-6 relative border-t-4 border-t-slate-600 h-[300px] flex flex-col">
+                    <div class="tech-panel-inset p-6 relative border-t-4 border-t-slate-600 flex flex-col">
                         <h4 class="text-base font-bold text-white mb-4">1. 初始资金风险</h4>
                         <div class="space-y-4 mb-4">
                             <div class="flex justify-between items-end border-b border-white/5 pb-2">
@@ -389,7 +389,7 @@
                         <p class="text-xs text-gasgx-textSub mt-auto bg-black/30 p-3">门槛骤降 1300万，落地阻力与财务风险断崖式下降。</p>
                     </div>
 
-                    <div class="tech-panel-inset p-6 relative border-t-4 border-t-gasgx-green shadow-[0_-5px_15px_rgba(0,242,96,0.1)] h-[300px] flex flex-col">
+                    <div class="tech-panel-inset p-6 relative border-t-4 border-t-gasgx-green shadow-[0_-5px_15px_rgba(0,242,96,0.1)] flex flex-col">
                         <h4 class="text-base font-bold text-white mb-4">2. 资金周转与回本</h4>
                         <div class="space-y-4 mb-4">
                             <div class="flex justify-between items-end border-b border-white/5 pb-2">
@@ -404,7 +404,7 @@
                         <p class="text-xs text-gasgx-textSub mt-auto bg-black/30 p-3">打破重资产常规，实现“当年投产当年回本”Web3级效率。</p>
                     </div>
 
-                    <div class="tech-panel-inset p-6 relative border-t-4 border-t-gasgx-cyan shadow-[0_-5px_15px_rgba(5,213,255,0.1)] h-[300px] flex flex-col">
+                    <div class="tech-panel-inset p-6 relative border-t-4 border-t-gasgx-cyan shadow-[0_-5px_15px_rgba(5,213,255,0.1)] flex flex-col">
                         <h4 class="text-base font-bold text-white mb-4">3. 首年即期分红</h4>
                         <div class="space-y-4 mb-4">
                             <div class="flex justify-between items-end border-b border-white/5 pb-2">
@@ -419,7 +419,7 @@
                         <p class="text-xs text-gasgx-textSub mt-auto bg-black/30 p-3">回本后账面净余现金流暴增 185%，直接触发大额股息。</p>
                     </div>
 
-                    <div class="tech-panel-inset p-6 relative border-t-4 border-t-amber-400 shadow-[0_-5px_15px_rgba(251,191,36,0.1)] h-[300px] flex flex-col bg-gradient-to-b from-[#0a0f1c] to-[#12160d]">
+                    <div class="tech-panel-inset p-6 relative border-t-4 border-t-amber-400 shadow-[0_-5px_15px_rgba(251,191,36,0.1)] flex flex-col bg-gradient-to-b from-[#0a0f1c] to-[#12160d]">
                         <h4 class="text-base font-bold text-white mb-4">4. Y2 飞轮乘数</h4>
                         <div class="space-y-4 mb-4">
                             <div class="flex justify-between items-end border-b border-white/5 pb-2">
@@ -444,7 +444,7 @@
                 <p class="text-gasgx-textSub text-lg mt-3 ml-6">10个月极速回本后，依靠强劲的内生现金流，无需稀释股权，即可实现指数级装机狂飙。</p>
             </div>
             <div class="slide-content">
-                <div class="grid grid-cols-3 gap-10 relative">
+                <div class="grid grid-cols-3 gap-10 relative items-stretch">
                     <div class="absolute top-[40%] left-[10%] right-[10%] h-1 bg-[#1A2436] -z-10">
                         <div class="h-full bg-gradient-to-r from-gasgx-green to-gasgx-cyan w-full opacity-60"></div>
                     </div>
@@ -495,11 +495,11 @@
                 <p class="text-gasgx-textSub text-lg mt-3 ml-6">仅以首期 100MW (<strong class="text-gasgx-cyan">保守以 $0.7 气价，51%控股方案</strong>) 并表计算，账面估值提升效应已极其明显。</p>
             </div>
             <div class="slide-content">
-                <div class="tech-card p-12 overflow-hidden relative border border-gasgx-border h-[380px] flex items-center">
+                <div class="tech-card p-12 overflow-hidden relative border border-gasgx-border flex items-stretch h-full min-h-[380px]">
                     <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTAgMGg0MHY0MEgweiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik0wIDEwaDQwTTEwIDB2NDAiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAyKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9zdmc+')] opacity-50"></div>
                     
-                    <div class="flex items-center justify-between gap-4 text-center relative z-10 w-full">
-                        <div class="p-8 tech-panel-inset flex-1 h-[220px] flex flex-col justify-center">
+                    <div class="flex items-center justify-between gap-4 text-center relative z-10 w-full h-full">
+                        <div class="p-8 tech-panel-inset flex-1 flex flex-col justify-center h-full">
                             <p class="text-sm font-medium text-gasgx-textSub mb-4">气源方当前总市值</p>
                             <p class="text-3xl font-black text-white">~ 4600 <span class="text-xl font-normal">万美元</span></p>
                             <div class="mt-4"><span class="text-xs text-red-400 bg-red-400/10 px-3 py-1 border border-red-400/20">财报承压 / 亏损</span></div>
@@ -507,7 +507,7 @@
                         
                         <div class="w-12 h-12 bg-[#1A2436] flex items-center justify-center text-2xl text-gasgx-textSub border border-white/5 shadow-inner flex-shrink-0">➕</div>
                         
-                        <div class="p-8 bg-gradient-to-b from-[#152336] to-[#0D1524] border border-gasgx-cyan/40 relative shadow-[0_0_20px_rgba(5,213,255,0.05)] flex-1 h-[240px] flex flex-col justify-center transform -translate-y-4">
+                        <div class="p-8 bg-gradient-to-b from-[#152336] to-[#0D1524] border border-gasgx-cyan/40 relative shadow-[0_0_20px_rgba(5,213,255,0.05)] flex-1 flex flex-col justify-center h-full scale-105 transform">
                             <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gasgx-cyan text-gasgx-bg text-sm font-black px-4 py-1.5 shadow-[0_5px_15px_rgba(5,213,255,0.4)] whitespace-nowrap">并表净利池</div>
                             <p class="text-sm font-medium text-gasgx-textSub mb-4">合资净利 (持51%)</p>
                             <p class="text-3xl font-black text-gasgx-cyan glow-text">2315 <span class="text-xl font-normal opacity-80">万美元 / 年</span></p>
@@ -516,7 +516,7 @@
                         
                         <div class="w-12 h-12 bg-[#1A2436] flex items-center justify-center text-2xl text-gasgx-textSub border border-white/5 shadow-inner flex-shrink-0">✖️</div>
                         
-                        <div class="p-8 tech-panel-inset flex-1 h-[220px] flex flex-col justify-center">
+                        <div class="p-8 tech-panel-inset flex-1 flex flex-col justify-center h-full">
                             <p class="text-sm font-medium text-gasgx-textSub mb-4">港股基建 P/E 估值</p>
                             <p class="text-3xl font-black text-white">10x - 12x</p>
                             <div class="mt-4"><span class="text-xs text-gasgx-cyan bg-gasgx-cyan/10 px-3 py-1 border border-gasgx-cyan/20">扭亏后的正常倍数</span></div>
@@ -524,7 +524,7 @@
                         
                         <div class="w-12 h-12 bg-[#1A2436] flex items-center justify-center text-2xl text-gasgx-textSub border border-white/5 shadow-inner flex-shrink-0">🟰</div>
                         
-                        <div class="p-8 bg-gradient-to-br from-gasgx-green/20 to-[#0A101A] border border-gasgx-green shadow-[0_0_30px_rgba(0,242,96,0.2)] flex-[1.3] h-[260px] flex flex-col justify-center transform scale-105">
+                        <div class="p-8 bg-gradient-to-br from-gasgx-green/20 to-[#0A101A] border border-gasgx-green shadow-[0_0_30px_rgba(0,242,96,0.2)] flex-[1.3] flex flex-col justify-center transform scale-110 h-full">
                             <p class="text-sm text-gasgx-green mb-4 font-bold tracking-widest uppercase">催化后总市值</p>
                             <p class="text-5xl font-black text-white drop-shadow-lg">> 2.7 亿 <span class="text-2xl font-normal">美元</span></p>
                             <div class="mt-6 pt-4 border-t border-gasgx-green/30">
@@ -536,29 +536,30 @@
             </div>
         </div>
 
-        <!-- Slide 9: 纳斯达克退出 Y1/Y2 -->
+        <!-- Slide 9: 纳斯达克退出 Y1/Y2 (完全修复下方溢出问题) -->
         <div class="slide">
             <div class="slide-header">
                 <h2 class="text-4xl font-extrabold text-white flex items-center"><span class="w-2 h-8 bg-gasgx-cyan mr-4 shadow-[0_0_10px_#05D5FF]"></span>六、 三年纳斯达克 (NASDAQ) 敲钟战略 (1/2)</h2>
                 <p class="text-gasgx-textSub text-lg mt-3 ml-6">以 SEC 监管标准设计顶层架构，奠定资本市场变现基础。</p>
             </div>
             <div class="slide-content">
-                <div class="grid grid-cols-2 gap-8 h-[380px]">
+                <!-- 彻底移除固定高度 h-[xxx]，改用 items-stretch 让容器自适应内容，完美解决溢出 -->
+                <div class="grid grid-cols-2 gap-8 items-stretch h-full">
                     <!-- Y1 -->
-                    <div class="tech-panel-inset p-8 border-t-4 border-t-gasgx-cyan flex flex-col">
-                        <h3 class="text-2xl font-black text-white flex items-center mb-8"><span class="w-10 h-10 bg-gasgx-cyan/20 border border-gasgx-cyan/50 text-gasgx-cyan flex items-center justify-center mr-4 shadow-[0_0_15px_rgba(5,213,255,0.3)] text-lg">Y1</span> 架构与合规地基</h3>
-                        <ul class="space-y-6 text-gasgx-textSub text-lg flex-grow">
-                            <li class="flex items-start bg-white/5 p-4 border border-white/5"><span class="text-gasgx-green text-xl mr-4 mt-1">✓</span> <span><strong class="text-white block mb-1">设立离岸主体 (HoldCo)：</strong> 在开曼或特拉华设立拟上市主体，100% 控股加拿大运营实体。</span></li>
-                            <li class="flex items-start bg-white/5 p-4 border border-white/5"><span class="text-gasgx-green text-xl mr-4 mt-1">✓</span> <span><strong class="text-white block mb-1">AB 股双重架构：</strong> 搁浅气源方持高表决权 B 股（保并表），BITLINK 掌高收益权 A 股。</span></li>
-                            <li class="flex items-start bg-white/5 p-4 border border-white/5"><span class="text-gasgx-green text-xl mr-4 mt-1">✓</span> <span><strong class="text-white block mb-1">PCAOB 审计：</strong> 资金汇入首日即聘用四大，按 US GAAP 建账。</span></li>
+                    <div class="tech-panel-inset p-6 border-t-4 border-t-gasgx-cyan flex flex-col justify-center">
+                        <h3 class="text-2xl font-black text-white flex items-center mb-6"><span class="w-10 h-10 bg-gasgx-cyan/20 border border-gasgx-cyan/50 text-gasgx-cyan flex items-center justify-center mr-4 shadow-[0_0_15px_rgba(5,213,255,0.3)] text-lg">Y1</span> 架构与合规地基</h3>
+                        <ul class="space-y-4 text-gasgx-textSub text-lg">
+                            <li class="flex items-start bg-white/5 p-3 border border-white/5"><span class="text-gasgx-green text-xl mr-4 mt-0.5">✓</span> <span><strong class="text-white block mb-1">设立离岸主体 (HoldCo)：</strong> 在开曼或特拉华设立拟上市主体，100% 控股加拿大运营实体。</span></li>
+                            <li class="flex items-start bg-white/5 p-3 border border-white/5"><span class="text-gasgx-green text-xl mr-4 mt-0.5">✓</span> <span><strong class="text-white block mb-1">AB 股双重架构：</strong> 搁浅气源方持高表决权 B 股（保并表），BITLINK 掌高收益权 A 股。</span></li>
+                            <li class="flex items-start bg-white/5 p-3 border border-white/5"><span class="text-gasgx-green text-xl mr-4 mt-0.5">✓</span> <span><strong class="text-white block mb-1">PCAOB 审计：</strong> 资金汇入首日即聘用四大，按 US GAAP 建账。</span></li>
                         </ul>
                     </div>
                     <!-- Y2 -->
-                    <div class="tech-panel-inset p-8 border-t-4 border-t-gasgx-green flex flex-col">
-                        <h3 class="text-2xl font-black text-white flex items-center mb-8"><span class="w-10 h-10 bg-gasgx-green/20 border border-gasgx-green/50 text-gasgx-green flex items-center justify-center mr-4 shadow-[0_0_15px_rgba(0,242,96,0.3)] text-lg">Y2</span> 科技叙事与扩张</h3>
-                        <ul class="space-y-6 text-gasgx-textSub text-lg flex-grow">
-                            <li class="flex items-start bg-white/5 p-4 border border-white/5"><span class="text-gasgx-green text-xl mr-4 mt-1">✓</span> <span><strong class="text-white block mb-1">ESG 算力叙事：</strong> 包装“消纳伴生气”减排故事，强调智能微电网技术，迎合华尔街高估值偏好 (20x+ P/E)。</span></li>
-                            <li class="flex items-start bg-white/5 p-4 border border-white/5"><span class="text-gasgx-green text-xl mr-4 mt-1">✓</span> <span><strong class="text-white block mb-1">异地复制：</strong> 依靠内生现金流开启 200MW 项目，向资本市场证明模型的高可扩展性。</span></li>
+                    <div class="tech-panel-inset p-6 border-t-4 border-t-gasgx-green flex flex-col justify-center">
+                        <h3 class="text-2xl font-black text-white flex items-center mb-6"><span class="w-10 h-10 bg-gasgx-green/20 border border-gasgx-green/50 text-gasgx-green flex items-center justify-center mr-4 shadow-[0_0_15px_rgba(0,242,96,0.3)] text-lg">Y2</span> 科技叙事与扩张</h3>
+                        <ul class="space-y-4 text-gasgx-textSub text-lg">
+                            <li class="flex items-start bg-white/5 p-3 border border-white/5"><span class="text-gasgx-green text-xl mr-4 mt-0.5">✓</span> <span><strong class="text-white block mb-1">ESG 算力叙事：</strong> 包装“消纳伴生气”减排故事，强调智能微电网技术，迎合华尔街高估值偏好 (20x+ P/E)。</span></li>
+                            <li class="flex items-start bg-white/5 p-3 border border-white/5"><span class="text-gasgx-green text-xl mr-4 mt-0.5">✓</span> <span><strong class="text-white block mb-1">异地复制：</strong> 依靠内生现金流开启 200MW 项目，向资本市场证明模型的高可扩展性。</span></li>
                         </ul>
                     </div>
                 </div>
@@ -572,7 +573,7 @@
                 <p class="text-gasgx-textSub text-lg mt-3 ml-6">用一次性巨额资本利得换取前期并表权，完成终极变现。</p>
             </div>
             <div class="slide-content">
-                <div class="tech-card p-10 border border-gasgx-cyan/30 relative overflow-hidden h-[380px] flex flex-col justify-center">
+                <div class="tech-card p-10 border border-gasgx-cyan/30 relative overflow-hidden h-[420px] flex flex-col justify-center">
                     <div class="absolute right-0 bottom-0 w-[400px] h-[400px] bg-gasgx-cyan/10 blur-[80px] pointer-events-none"></div>
                     <h3 class="text-2xl font-black text-white flex items-center mb-8 relative z-10"><span class="w-10 h-10 bg-amber-400/20 border border-amber-400/50 text-amber-400 flex items-center justify-center mr-4 shadow-[0_0_15px_rgba(251,191,36,0.3)] text-lg">Y3</span> 股东超额收益核算 <span class="text-base font-normal text-gasgx-textSub ml-4 border border-white/10 px-3 py-1 bg-black/30">(以 300MW 规模为例)</span></h3>
                     
@@ -626,7 +627,7 @@
         window.currentPwr = 0.0625;
         window.currentCap = 3200;
 
-        // 立即执行的自调用函数 (彻底废弃 DOMContentLoaded 以防在预览环境中失效)
+        // 立即执行的自调用函数
         (function initPPT() {
             
             // === 1. 核心翻页引擎 ===
@@ -657,14 +658,11 @@
             renderSlide();
 
             // === 2. 事件绑定引擎 ===
-            
-            // A. 控制台按钮点击
             const btnPrev = document.getElementById('btn-prev');
             const btnNext = document.getElementById('btn-next');
             if(btnPrev) btnPrev.addEventListener('click', goPrev);
             if(btnNext) btnNext.addEventListener('click', goNext);
 
-            // B. 键盘方向键 / 空格
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'ArrowRight' || e.key === ' ') {
                     e.preventDefault(); goNext();
@@ -673,7 +671,6 @@
                 }
             });
 
-            // C. 鼠标滚轮 (加入 50px 防抖阈值，防止太灵敏)
             window.addEventListener('wheel', (e) => {
                 if (isAnimating) return;
                 if (e.deltaY > 50) {
@@ -683,15 +680,6 @@
                     goPrev();
                     isAnimating = true; setTimeout(() => isAnimating = false, 500);
                 }
-            });
-
-            // D. 移动端触屏滑动 (Swipe)
-            let touchStartX = 0;
-            window.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; });
-            window.addEventListener('touchend', e => {
-                let touchEndX = e.changedTouches[0].screenX;
-                if (touchStartX - touchEndX > 50) goNext(); // 左滑 (下一页)
-                if (touchStartX - touchEndX < -50) goPrev(); // 右滑 (上一页)
             });
 
             // === 3. 全屏等比缩放引擎 (Letterbox) ===
@@ -705,21 +693,20 @@
                 
                 let scale;
                 if (windowRatio > targetRatio) {
-                    scale = windowHeight / 720; // 屏幕更宽，基于高度缩放
+                    scale = windowHeight / 720; 
                 } else {
-                    scale = windowWidth / 1280; // 屏幕更窄，基于宽度缩放
+                    scale = windowWidth / 1280; 
                 }
-                scale = scale * 0.98; // 预留安全边距，防止贴死边缘
+                scale = scale * 0.98; // 预留安全边距
                 container.style.transform = `translate(-50%, -50%) scale(${scale})`;
             }
             window.addEventListener('resize', resizeDeck);
             resizeDeck(); // 初始化尺寸
 
-            // === 4. 业务图表与计算逻辑 (包裹在 Try-Catch 中，确保图表报错也不影响翻页) ===
+            // === 4. 业务图表与计算逻辑 ===
             try {
                 if (typeof Chart !== 'undefined') {
                     Chart.defaults.color = '#94A3B8';
-                    Chart.defaults.borderColor = 'rgba(255,255,255,0.05)';
                     Chart.defaults.font.family = "'Noto Sans SC', sans-serif";
 
                     // 静态图表 (Slide 4)
@@ -730,18 +717,32 @@
                             data: {
                                 labels: ['模式A ($3纯卖)', '模式B (51%合资)', '模式C (70%合资)'],
                                 datasets: [
-                                    { label: '气源方收益', data: [2839, 2977, 3641], backgroundColor: '#00F260', borderWidth: 1, borderColor: 'rgba(0, 242, 96, 0.5)' },
-                                    { label: 'BITLINK 收益', data: [2362, 2224, 1560], backgroundColor: '#05D5FF', borderWidth: 1, borderColor: 'rgba(5, 213, 255, 0.5)' }
+                                    { 
+                                        label: '气源方收益', 
+                                        data: [2839, 2977, 3641], 
+                                        backgroundColor: 'rgba(0, 242, 96, 0.15)', // 极客风半透实心
+                                        borderWidth: 2, 
+                                        borderColor: '#00F260', // 霓虹亮边
+                                        barPercentage: 0.6
+                                    },
+                                    { 
+                                        label: 'BITLINK 收益', 
+                                        data: [2362, 2224, 1560], 
+                                        backgroundColor: 'rgba(5, 213, 255, 0.15)', 
+                                        borderWidth: 2, 
+                                        borderColor: '#05D5FF',
+                                        barPercentage: 0.6
+                                    }
                                 ]
                             },
                             options: {
                                 responsive: true, maintainAspectRatio: false,
                                 plugins: {
                                     legend: { position: 'bottom', labels: { color: '#F8FAFC', font: { size: 14 } } },
-                                    tooltip: { backgroundColor: 'rgba(15, 22, 36, 0.95)', titleColor: '#fff', bodyColor: '#cbd5e1' }
+                                    tooltip: { backgroundColor: 'rgba(15, 22, 36, 0.95)', titleColor: '#fff', bodyColor: '#00F260', borderColor: '#23314B', borderWidth: 1 }
                                 },
                                 scales: {
-                                    y: { beginAtZero: true, title: { display: true, text: '万美元' } },
+                                    y: { beginAtZero: true, title: { display: true, text: '万美元', color: '#94A3B8' }, grid: { color: 'rgba(255,255,255,0.05)' } },
                                     x: { grid: { display: false } }
                                 }
                             }
@@ -754,8 +755,6 @@
                     
                     if(canvasDyn) {
                         const ctxDyn = canvasDyn.getContext('2d');
-                        let gradGreen = ctxDyn.createLinearGradient(0, 0, 0, 200);
-                        gradGreen.addColorStop(0, '#00F260'); gradGreen.addColorStop(1, 'rgba(0, 242, 96, 0.2)');
                         
                         dynChart = new Chart(ctxDyn, {
                             type: 'bar',
@@ -763,16 +762,16 @@
                                 labels: ['总收入(Gross)', '燃料成本(Fuel)', '净利润(Net)'],
                                 datasets: [{
                                     label: '金额(万美元)', data: [0, 0, 0],
-                                    backgroundColor: ['rgba(148, 163, 184, 0.6)', 'rgba(244, 63, 94, 0.6)', gradGreen],
-                                    borderColor: ['rgba(148, 163, 184, 1)', 'rgba(244, 63, 94, 1)', '#00F260'],
-                                    borderWidth: 1, barPercentage: 0.5
+                                    backgroundColor: ['rgba(148, 163, 184, 0.15)', 'rgba(244, 63, 94, 0.15)', 'rgba(0, 242, 96, 0.15)'],
+                                    borderColor: ['#94A3B8', '#F43F5E', '#00F260'],
+                                    borderWidth: 2, barPercentage: 0.6
                                 }]
                             },
                             options: {
                                 responsive: true, maintainAspectRatio: false,
-                                plugins: { legend: { display: false } },
+                                plugins: { legend: { display: false }, tooltip: { backgroundColor: 'rgba(15, 22, 36, 0.95)', titleColor: '#fff', bodyColor: '#05D5FF', borderColor: '#23314B', borderWidth: 1 } },
                                 scales: {
-                                    y: { beginAtZero: true },
+                                    y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } },
                                     x: { grid: { display: false } }
                                 }
                             }
@@ -832,17 +831,14 @@
 
                         // 图表重绘
                         if(dynChart) {
-                            const ctx = document.getElementById('slideDynamicChart').getContext('2d');
-                            let grad = ctx.createLinearGradient(0, 0, 0, 200);
                             if(window.currentGas === 0.0) {
-                                grad.addColorStop(0, '#00F260'); grad.addColorStop(1, 'rgba(0, 242, 96, 0.2)');
                                 dynChart.data.datasets[0].borderColor[2] = '#00F260';
+                                dynChart.data.datasets[0].backgroundColor[2] = 'rgba(0, 242, 96, 0.15)';
                             } else {
-                                grad.addColorStop(0, '#05D5FF'); grad.addColorStop(1, 'rgba(5, 213, 255, 0.2)');
                                 dynChart.data.datasets[0].borderColor[2] = '#05D5FF';
+                                dynChart.data.datasets[0].backgroundColor[2] = 'rgba(5, 213, 255, 0.15)';
                             }
                             dynChart.data.datasets[0].data = [grossRev, fuelCost, netProfit];
-                            dynChart.data.datasets[0].backgroundColor[2] = grad;
                             dynChart.update();
                         }
                     };
@@ -853,10 +849,9 @@
                     }
                 }
             } catch (e) {
-                console.error("Chart 渲染发生错误，但PPT翻页功能已保全！", e);
+                console.error("Chart Error", e);
             }
         })();
     </script>
 </body>
 </html>
-```
