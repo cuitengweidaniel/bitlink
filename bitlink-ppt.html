@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>搁浅天然气发电与加密货币用电合资项目 | 战略推演 PPT</title>
+    
+    <!-- 引入外部字体，确保各端文本渲染宽度一致，防止排版崩塌 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Tailwind 配置 -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        gasgx: {
+                            bg: '#0B1121',
+                            card: '#151E32',
+                            border: '#23314B',
+                            green: '#00F260',
+                            cyan: '#05D5FF',
+                            textMain: '#F8FAFC',
+                            textSub: '#94A3B8'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Noto Sans SC"', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* PPT 核心引擎样式 */
+        body, html {
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
+            background-color: #000; /* 外围黑边 */
+            overflow: hidden;
+            font-family: 'Noto Sans SC', sans-serif;
+            color: #F8FAFC;
+        }
+
+        /* 强制直角 */
+        * { border-radius: 0 !important; }
+
+        /* 16:9 舞台容器 */
+        #deck-container {
+            position: absolute;
+            width: 1280px;
+            height: 720px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transform-origin: center center;
+            background-color: #050810;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(21, 30, 50, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(21, 30, 50, 0.4) 0%, transparent 50%);
+            box-shadow: 0 0 50px rgba(0,0,0,1);
+            overflow: hidden;
+        }
+
+        /* 幻灯片页面层级 */
+        .slide {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease-in-out;
+            padding: 40px 60px; /* 统一安全边距 */
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            z-index: 1;
+        }
+        .slide.active {
+            opacity: 1;
+            pointer-events: auto;
+            z-index: 10;
+        }
+
+        /* ====== 3D 立体玻璃卡片样式 ====== */
+        .tech-card {
+            background: linear-gradient(145deg, rgba(25, 36, 56, 0.8) 0%, rgba(15, 22, 36, 0.95) 100%);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(45, 60, 90, 0.6);
+            box-shadow: 
+                0 15px 35px -10px rgba(0, 0, 0, 0.8), 
+                inset 1px 1px 0 rgba(255, 255, 255, 0.05),
+                inset -1px -1px 0 rgba(0, 0, 0, 0.2);
+        }
+        .tech-panel-inset {
+            background: #080C17;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            box-shadow: inset 0 4px 15px rgba(0, 0, 0, 0.6);
+        }
+
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-image: linear-gradient(to right, #00F260, #05D5FF);
+        }
+        .glow-text { text-shadow: 0 0 20px currentColor; }
+
+        /* 强化版 PPT 导航栏组件 */
+        #ppt-controls {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 999999; /* 确保绝对不被遮挡 */
+            display: flex;
+            align-items: center;
+            background: rgba(11, 17, 33, 0.95);
+            border: 1px solid #05D5FF;
+            padding: 8px 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            border-radius: 50px !important;
+        }
+        #ppt-controls button {
+            background: #152336;
+            border: 1px solid #23314B;
+            color: #05D5FF;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 8px 16px;
+            margin: 0 5px;
+            border-radius: 20px !important;
+            transition: all 0.2s;
+        }
+        #ppt-controls button:hover { 
+            background: #05D5FF; 
+            color: #0A101A; 
+        }
+        #slide-counter { 
+            font-size: 16px; 
+            font-weight: bold; 
+            font-family: monospace; 
+            letter-spacing: 2px; 
+            color: #fff;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        /* 幻灯片内部排版微调 */
+        .slide-header { flex-shrink: 0; margin-bottom: 30px; }
+        .slide-content { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; height: 100%; }
+    </style>
+</head>
+<body>
+
+    <!-- PPT 容器 -->
+    <div id="deck-container">
+
+        <!-- Slide 1: 封面 (Hero) -->
+        <div class="slide active flex justify-center items-center text-center">
+            <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-gasgx-green opacity-[0.06] blur-[120px] pointer-events-none"></div>
+            <div class="absolute bottom-0 right-1/4 w-[500px] h-[300px] bg-gasgx-cyan opacity-[0.05] blur-[100px] pointer-events-none"></div>
+            
+            <div class="relative z-10 w-full">
+                <div class="inline-block px-5 py-2 mb-8 border border-gasgx-cyan/30 bg-gasgx-cyan/5 text-sm text-gasgx-cyan tracking-widest uppercase shadow-[0_0_15px_rgba(5,213,255,0.1)]">
+                    Confidential Strategic Proposal
+                </div>
+                <h1 class="text-6xl font-extrabold tracking-tight mb-10 leading-tight text-white drop-shadow-2xl">
+                    搁浅天然气发电 <br />
+                    <span class="text-gradient drop-shadow-lg">与加密货币用电合资项目战略规划</span>
+                </h1>
+                <p class="text-2xl text-gasgx-textSub font-light mb-12 max-w-4xl mx-auto leading-relaxed">
+                    重构能源利用效率 · 95% 全年极致在线率 · 助力搁浅气源方资产倍增与纳斯达克敲钟
+                </p>
+                <div class="mt-8 border-t border-gasgx-border pt-8 inline-block px-16">
+                    <p class="text-xl font-bold tracking-widest text-white flex items-center justify-center">
+                        <span class="text-gasgx-green mr-3 glow-text text-2xl">⚡</span> BITLINK <span class="mx-4 text-gasgx-border">|</span> 搁浅气源方
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: 执行摘要 -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="text-4xl font-extrabold text-white flex items-center"><span class="w-2 h-8 bg-gasgx-green mr-4 shadow-[0_0_10px_#00F260]"></span>一、 执行摘要 (Executive Summary)</h2>
+                <p class="text-gasgx-textSub text-lg mt-3 ml-6">本项目旨在由 BITLINK 出资 <strong>$4500万美元</strong>，建设并运营100MW现代化燃气电厂。这不仅是基础设施投资，更是专为搁浅气源方量身定制的<strong>资本杠杆工具</strong>。</p>
+            </div>
+            <div class="slide-content">
+                <div class="grid grid-cols-2 gap-8">
+                    <div class="tech-card p-8 group relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-16 h-16 bg-gasgx-green/10 -mr-4 -mt-4 transition-transform group-hover:scale-150"></div>
+                        <div class="text-gasgx-green mb-3 text-sm font-bold tracking-widest uppercase">总装机容量</div>
+                        <div class="text-6xl font-black text-white mb-4 drop-shadow-md">100 <span class="text-2xl font-medium text-gasgx-textSub">MW</span></div>
+                        <p class="text-base text-gasgx-textSub">BITLINK 出资 4500 万美元全资建设底层设施，承担建设风险。</p>
+                    </div>
+                    <div class="tech-card p-8 group relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-16 h-16 bg-gasgx-cyan/10 -mr-4 -mt-4 transition-transform group-hover:scale-150"></div>
+                        <div class="text-gasgx-cyan mb-3 text-sm font-bold tracking-widest uppercase">目标在线率</div>
+                        <div class="text-6xl font-black text-white mb-4 drop-shadow-md">95 <span class="text-2xl font-medium text-gasgx-textSub">%</span></div>
+                        <p class="text-base text-gasgx-textSub">全年无休满负荷运转 8322 小时，打破传统电厂调峰限制。</p>
+                    </div>
+                    <div class="tech-card p-8 group relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-16 h-16 bg-gasgx-green/10 -mr-4 -mt-4 transition-transform group-hover:scale-150"></div>
+                        <div class="text-gasgx-green mb-3 text-sm font-bold tracking-widest uppercase">年总发电量</div>
+                        <div class="text-6xl font-black text-white mb-4 drop-shadow-md">8.32 <span class="text-2xl font-medium text-gasgx-textSub">亿度</span></div>
+                        <p class="text-base text-gasgx-textSub">就地转化为高价值数字加密资产算力基建，彻底消纳能源。</p>
+                    </div>
+                    <div class="tech-card p-8 group relative overflow-hidden border-l-4 border-l-gasgx-cyan">
+                        <div class="absolute top-0 right-0 w-16 h-16 bg-gasgx-cyan/10 -mr-4 -mt-4 transition-transform group-hover:scale-150"></div>
+                        <div class="text-white mb-3 text-sm font-bold tracking-widest uppercase">上市公司并表权</div>
+                        <div class="text-6xl font-black text-white mb-4 drop-shadow-md">51 <span class="text-2xl font-medium text-gasgx-textSub">%</span></div>
+                        <p class="text-base text-gasgx-textSub">搁浅气源方零资本支出 (Zero CapEx) 即可实现绝对控股及扩表。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: 核心博弈 - 模式文字 -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="text-4xl font-extrabold text-white flex items-center"><span class="w-2 h-8 bg-gasgx-cyan mr-4 shadow-[0_0_10px_#05D5FF]"></span>二、 核心博弈：单纯购气 vs 并表合资？</h2>
+                <p class="text-gasgx-textSub text-lg mt-3 ml-6">打破常规卖气思维。通过合资并提供<strong class="text-gasgx-cyan">“0气价”或“低气价”</strong>，将直接推高合资公司净利，让搁浅气源方获得<strong class="text-gasgx-green">远超单纯售气的绝对收益金额与并表价值</strong>。</p>
+            </div>
+            <div class="slide-content">
+                <div class="grid grid-cols-3 gap-6 h-full items-stretch">
+                    <div class="tech-card p-6 border-t-4 border-t-slate-500 flex flex-col">
+                        <h4 class="font-bold text-white text-xl mb-6 pb-4 border-b border-white/10 flex items-center"><span class="w-4 h-4 bg-slate-500 mr-3"></span>模式 A：单纯卖气 ($3/mcf)</h4>
+                        <ul class="text-base text-gasgx-textSub space-y-4 flex-grow">
+                            <li class="flex items-start"><span class="text-slate-500 mr-2">■</span> 仅作为天然气供应商，不成立合资公司。</li>
+                            <li class="flex items-start"><span class="text-slate-500 mr-2">■</span> 搁浅气源方卖气毛收入：<strong class="text-white">2839 万美元</strong>。</li>
+                            <li class="flex items-start text-red-400"><span class="mr-2">■</span> 致命缺陷：无法实现资产并表，无权分享电厂高达 2362 万美元的净利润。</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="tech-card p-6 border-t-4 border-t-gasgx-cyan flex flex-col bg-gradient-to-b from-[#0A101A] to-[#121A28]">
+                        <h4 class="font-bold text-white text-xl mb-6 pb-4 border-b border-white/10 flex items-center"><span class="w-4 h-4 bg-gasgx-cyan mr-3 shadow-[0_0_10px_#05D5FF]"></span>模式 B：常规合资 ($0.7/mcf)</h4>
+                        <ul class="text-base text-gasgx-textSub space-y-4 flex-grow">
+                            <li class="flex items-start"><span class="text-gasgx-cyan mr-2">■</span> 成立合资公司，<strong class="text-white">获 51% 股份实现并表</strong>。</li>
+                            <li class="flex items-start"><span class="text-gasgx-cyan mr-2">■</span> 卖气收入保底：662 万美元。</li>
+                            <li class="flex items-start"><span class="text-gasgx-cyan mr-2">■</span> 额外分红收益 (51%)：2315 万美元。</li>
+                            <li class="flex items-start pt-4 mt-2 border-t border-white/5"><span class="text-gasgx-cyan mr-2">■</span> 搁浅气源方总收益：<strong class="text-gasgx-cyan text-2xl">2977 万美元</strong>。</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="tech-card p-6 border-t-4 border-t-gasgx-green flex flex-col relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-40 h-40 bg-gasgx-green/10 blur-3xl"></div>
+                        <h4 class="font-bold text-white text-xl mb-6 pb-4 border-b border-white/10 flex items-center relative z-10"><span class="w-4 h-4 bg-gasgx-green mr-3 shadow-[0_0_10px_#00F260]"></span>模式 C：深度绑定 ($0气价)</h4>
+                        <ul class="text-base text-gasgx-textSub space-y-4 flex-grow relative z-10">
+                            <li class="flex items-start"><span class="text-gasgx-green mr-2">■</span> 提供免费伴生气，电厂净利飙升至 <strong>5201 万</strong>。</li>
+                            <li class="flex items-start"><span class="text-gasgx-green mr-2">■</span> 触发对赌，搁浅气源方获得 <strong class="text-gasgx-green text-xl">70%</strong> 超额分红及并表权。</li>
+                            <li class="flex items-start pt-4 mt-2 border-t border-white/5"><span class="text-gasgx-green mr-2">■</span> 气源方纯分红总收益：<strong class="text-gasgx-green text-3xl drop-shadow-md">3641 万美元</strong>。</li>
+                            <li class="flex items-start"><span class="text-gasgx-green mr-2">■</span> BITLINK 纯利 1560 万，实现极速回本双赢。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: 核心博弈 - 图表对比 -->
+        <div class="slide">
+            <div class="slide-header flex justify-between items-end">
+                <div>
+                    <h2 class="text-4xl font-extrabold text-white flex items-center"><span class="w-2 h-8 bg-gasgx-green mr-4 shadow-[0_0_10px_#00F260]"></span>绝对收益数据可视化</h2>
+                    <p class="text-gasgx-textSub text-lg mt-3 ml-6">单位：万美元 / 年</p>
+                </div>
+                <div class="tech-panel-inset px-6 py-3 border-l-4 border-l-gasgx-green text-sm text-gasgx-textSub max-w-xl">
+                    <span class="text-gasgx-green font-bold">结论：</span> 放弃气价收入换取高比例合资股份，实际入口袋的“真金白银”最高，且资产负债表最优。
+                </div>
+            </div>
+            <div class="slide-content">
+                <div class="tech-card h-[450px] relative w-full mt-4">
+                    <div class="absolute inset-8">
+                        <canvas id="slideWinWinChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: 财务推演舱 -->
+        <div class="slide">
+            <div class="slide-header flex justify-between items-center mb-6">
+                <div>
+                    <h2 class="text-4xl font-extrabold text-white flex items-center"><span class="w-2 h-8 bg-gasgx-cyan mr-4 shadow-[0_0_10px_#05D5FF]"></span>三、 财务模型动态推演舱</h2>
+                    <p class="text-gasgx-textSub text-sm mt-2 ml-6">基准：100MW装机 | 8.322亿度电 (95% 稼动率)</p>
+                </div>
+            </div>
+            <div class="slide-content justify-start">
+                <div class="tech-card p-2 shadow-2xl h-full flex flex-col relative z-20">
+                    <div class="grid grid-cols-12 overflow-hidden bg-[#0A101A] h-full flex-grow">
+                        
+                        <!-- 左侧控制面板 -->
+                        <div class="col-span-5 p-6 border-r border-gasgx-border/50 bg-[#070B14] flex flex-col justify-between">
+                            <div>
+                                <label class="flex items-center text-xs font-semibold text-gasgx-textSub mb-3 uppercase tracking-wider">
+                                    <div class="w-1 h-3 bg-gasgx-green mr-2"></div> 供气价格模型 & 气源方占股
+                                </label>
+                                <div class="grid grid-cols-1 gap-2 mb-4">
+                                    <button onclick="window.updateSlideSimulator(3.0, window.currentPwr, window.currentCap)" id="s-gas-3" class="ppt-sim-btn py-2 px-4 text-xs font-bold border border-gasgx-border bg-[#121A28] text-gasgx-textSub flex justify-between cursor-pointer relative hover:brightness-125">
+                                        <span>$3/mcf</span><span>无合资 0%</span>
+                                    </button>
+                                    <button onclick="window.updateSlideSimulator(0.7, window.currentPwr, window.currentCap)" id="s-gas-07" class="ppt-sim-btn py-2 px-4 text-xs font-bold border border-gasgx-border bg-[#121A28] text-gasgx-textSub flex justify-between cursor-pointer relative hover:brightness-125">
+                                        <span>$0.7/mcf</span><span>常规 51%</span>
+                                    </button>
+                                    <button onclick="window.updateSlideSimulator(0.0, window.currentPwr, window.currentCap)" id="s-gas-0" class="ppt-sim-btn py-2 px-4 text-xs font-bold border border-gasgx-green bg-gasgx-green/10 text-gasgx-green shadow-[0_0_10px_rgba(0,242,96,0.15)] flex justify-between cursor-pointer relative hover:brightness-125">
+                                        <span>$0/mcf</span><span>深度 70%</span>
+                                    </button>
+                                </div>
+
+                                <label class="flex items-center text-xs font-semibold text-gasgx-textSub mb-3 uppercase tracking-wider">
+                                    <div class="w-1 h-3 bg-gasgx-cyan mr-2"></div> 托管电价 (Power Rate)
+                                </label>
+                                <div class="grid grid-cols-2 gap-2 mb-4">
+                                    <button onclick="window.updateSlideSimulator(window.currentGas, 0.0625, window.currentCap)" id="s-pwr-625" class="ppt-sim-pwr py-2 text-xs font-bold border border-gasgx-cyan bg-gasgx-cyan/10 text-gasgx-cyan cursor-pointer relative hover:brightness-125">6.25 美分</button>
+                                    <button onclick="window.updateSlideSimulator(window.currentGas, 0.07, window.currentCap)" id="s-pwr-700" class="ppt-sim-pwr py-2 text-xs font-bold border border-gasgx-border bg-[#121A28] text-gasgx-textSub cursor-pointer relative hover:brightness-125">7.00 美分</button>
+                                </div>
+
+                                <label class="flex items-center text-xs font-semibold text-gasgx-textSub mb-3 uppercase tracking-wider">
+                                    <div class="w-1 h-3 bg-amber-400 mr-2"></div> 建造成本 (CapEx)
+                                </label>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button onclick="window.updateSlideSimulator(window.currentGas, window.currentPwr, 4500)" id="s-cap-45" class="ppt-sim-cap py-2 text-xs font-bold border border-gasgx-border bg-[#121A28] text-gasgx-textSub cursor-pointer relative hover:brightness-125">45万/MW</button>
+                                    <button onclick="window.updateSlideSimulator(window.currentGas, window.currentPwr, 3200)" id="s-cap-32" class="ppt-sim-cap py-2 text-xs font-bold border border-amber-400 bg-amber-400/10 text-amber-400 cursor-pointer relative hover:brightness-125">32万/MW</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 右侧数据大屏 -->
+                        <div class="col-span-7 p-6 flex flex-col relative bg-[#0B1121]">
+                            <div class="grid grid-cols-2 gap-3 mb-4 flex-shrink-0">
+                                <div class="tech-panel-inset p-3 border-l-2 border-l-slate-500">
+                                    <p class="text-[10px] text-gasgx-textSub mb-1">电厂总净利 (Net)</p>
+                                    <p class="text-2xl font-black text-white glow-text" id="s-val-net">5201 <span class="text-sm font-normal">万</span></p>
+                                </div>
+                                <div class="tech-panel-inset p-3 border-l-2 border-l-gasgx-cyan">
+                                    <p class="text-[10px] text-gasgx-cyan mb-1">气源方分红 (<span id="s-val-eq">70%</span>)</p>
+                                    <p class="text-2xl font-black text-gasgx-cyan glow-text" id="s-val-share">3641 <span class="text-sm font-normal">万</span></p>
+                                </div>
+                                <div class="tech-panel-inset p-3 border-l-2 border-l-gasgx-green">
+                                    <p class="text-[10px] text-gasgx-green mb-1">电厂回本周期</p>
+                                    <p class="text-2xl font-black text-gasgx-green glow-text" id="s-val-pay">0.62 <span class="text-sm font-normal">年</span></p>
+                                </div>
+                                <div class="tech-panel-inset p-3 border-l-2 border-l-amber-400">
+                                    <p class="text-[10px] text-amber-400 mb-1">首年净余现金流</p>
+                                    <p class="text-2xl font-black text-amber-400 glow-text" id="s-val-cash">2001 <span class="text-sm font-normal">万</span></p>
+                                </div>
+                            </div>
+                            <div class="tech-panel-inset flex-grow relative mt-2 min-h-[150px]">
+                                <div class="absolute inset-4">
+                                    <canvas id="slideDynamicChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: 极致降本穿透对比 -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="text-4xl font-extrabold text-white flex items-center"><span class="w-2 h-8 bg-amber-400 mr-4 shadow-[0_0_10px_#FBBF24]"></span>极致降本穿透对比 (45万/MW vs 32万/MW)</h2>
+                <p class="text-gasgx-textSub text-lg mt-3 ml-6">基于最优对赌模型（$0气价，6.25美分电价），建厂成本降低 28.8% 将在各生命周期产生核裂变效应。</p>
+            </div>
+            <div class="slide-content">
+                <div class="grid grid-cols-4 gap-6 relative">
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-amber-400/5 blur-[100px] pointer-events-none"></div>
+                    
+                    <div class="tech-panel-inset p-6 relative border-t-4 border-t-slate-600 h-[300px] flex flex-col">
+                        <h4 class="text-base font-bold text-white mb-4">1. 初始资金风险</h4>
+                        <div class="space-y-4 mb-4">
+                            <div class="flex justify-between items-end border-b border-white/5 pb-2">
+                                <span class="text-sm text-slate-500">常规 (45万)</span>
+                                <span class="text-base text-slate-400">4500 万美元</span>
+                            </div>
+                            <div class="flex justify-between items-end">
+                                <span class="text-sm text-amber-400 font-bold">降本 (32万)</span>
+                                <span class="text-2xl text-amber-400 font-black">3200 万</span>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gasgx-textSub mt-auto bg-black/30 p-3">门槛骤降 1300万，落地阻力与财务风险断崖式下降。</p>
+                    </div>
+
+                    <div class="tech-panel-inset p-6 relative border-t-4 border-t-gasgx-green shadow-[0_-5px_15px_rgba(0,242,96,0.1)] h-[300px] flex flex-col">
+                        <h4 class="text-base font-bold text-white mb-4">2. 资金周转与回本</h4>
+                        <div class="space-y-4 mb-4">
+                            <div class="flex justify-between items-end border-b border-white/5 pb-2">
+                                <span class="text-sm text-slate-500">常规 (45万)</span>
+                                <span class="text-base text-slate-400">10.3 个月</span>
+                            </div>
+                            <div class="flex justify-between items-end">
+                                <span class="text-sm text-gasgx-green font-bold">降本 (32万)</span>
+                                <span class="text-2xl text-gasgx-green font-black">7.4 个月</span>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gasgx-textSub mt-auto bg-black/30 p-3">打破重资产常规，实现“当年投产当年回本”Web3级效率。</p>
+                    </div>
+
+                    <div class="tech-panel-inset p-6 relative border-t-4 border-t-gasgx-cyan shadow-[0_-5px_15px_rgba(5,213,255,0.1)] h-[300px] flex flex-col">
+                        <h4 class="text-base font-bold text-white mb-4">3. 首年即期分红</h4>
+                        <div class="space-y-4 mb-4">
+                            <div class="flex justify-between items-end border-b border-white/5 pb-2">
+                                <span class="text-sm text-slate-500">常规 (45万)</span>
+                                <span class="text-base text-slate-400">701 万美元</span>
+                            </div>
+                            <div class="flex justify-between items-end">
+                                <span class="text-sm text-gasgx-cyan font-bold">降本 (32万)</span>
+                                <span class="text-2xl text-gasgx-cyan font-black">2001 万</span>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gasgx-textSub mt-auto bg-black/30 p-3">回本后账面净余现金流暴增 185%，直接触发大额股息。</p>
+                    </div>
+
+                    <div class="tech-panel-inset p-6 relative border-t-4 border-t-amber-400 shadow-[0_-5px_15px_rgba(251,191,36,0.1)] h-[300px] flex flex-col bg-gradient-to-b from-[#0a0f1c] to-[#12160d]">
+                        <h4 class="text-base font-bold text-white mb-4">4. Y2 飞轮乘数</h4>
+                        <div class="space-y-4 mb-4">
+                            <div class="flex justify-between items-end border-b border-white/5 pb-2">
+                                <span class="text-sm text-slate-500">常规 (45万)</span>
+                                <span class="text-sm text-slate-400">结合Y2利润再建</span>
+                            </div>
+                            <div class="flex justify-between items-end flex-col items-end">
+                                <span class="text-sm text-amber-400 font-bold self-start">降本 (32万)</span>
+                                <span class="text-xl text-amber-400 font-black mt-2">尾款直供建 150MW+</span>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gasgx-textSub mt-auto bg-black/30 p-3">造价极低让扩张倍数指数级放大，加速冲刺纳斯达克体量。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: 扩张飞轮 -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="text-4xl font-extrabold text-white flex items-center"><span class="w-2 h-8 bg-gasgx-green mr-4 shadow-[0_0_10px_#00F260]"></span>四、 “0气价”复利扩张飞轮</h2>
+                <p class="text-gasgx-textSub text-lg mt-3 ml-6">10个月极速回本后，依靠强劲的内生现金流，无需稀释股权，即可实现指数级装机狂飙。</p>
+            </div>
+            <div class="slide-content">
+                <div class="grid grid-cols-3 gap-10 relative">
+                    <div class="absolute top-[40%] left-[10%] right-[10%] h-1 bg-[#1A2436] -z-10">
+                        <div class="h-full bg-gradient-to-r from-gasgx-green to-gasgx-cyan w-full opacity-60"></div>
+                    </div>
+
+                    <div class="tech-card p-8 text-center bg-[#080C14]">
+                        <div class="w-20 h-20 bg-[#0A101A] border-4 border-gasgx-green flex items-center justify-center text-2xl font-black mx-auto mb-6 text-gasgx-green shadow-[0_0_25px_rgba(0,242,96,0.4)]">Y1</div>
+                        <h3 class="text-xl font-bold text-white mb-2">极速回本期</h3>
+                        <p class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gasgx-green to-white mb-6">100 MW</p>
+                        <div class="text-left text-sm text-gasgx-textSub space-y-4 tech-panel-inset p-6">
+                            <p class="flex justify-between"><span class="opacity-80">初始投资:</span> <span class="text-white font-bold">4500万美元</span></p>
+                            <p class="flex justify-between"><span class="opacity-80">燃料成本:</span> <span class="text-gasgx-green font-bold">0 (赋能)</span></p>
+                            <div class="border-t border-white/5 my-2"></div>
+                            <p class="flex justify-between"><span class="opacity-80">Y1净利:</span> <strong class="text-lg text-white">5201 万美元</strong></p>
+                        </div>
+                    </div>
+                    
+                    <div class="tech-card p-8 text-center bg-[#080C14]">
+                        <div class="w-20 h-20 bg-[#0A101A] border-4 border-gasgx-cyan flex items-center justify-center text-2xl font-black mx-auto mb-6 text-gasgx-cyan shadow-[0_0_25px_rgba(5,213,255,0.4)]">Y2</div>
+                        <h3 class="text-xl font-bold text-white mb-2">利润全额复投</h3>
+                        <p class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gasgx-cyan to-white mb-6">200 MW</p>
+                        <div class="text-left text-sm text-gasgx-textSub space-y-4 tech-panel-inset p-6">
+                            <p class="flex justify-between"><span class="opacity-80">复投资金:</span> <span class="text-white font-bold">4500万美元</span></p>
+                            <p class="flex justify-between"><span class="opacity-80">资金来源:</span> <span class="text-gasgx-cyan font-bold">Y1纯利支付</span></p>
+                            <div class="border-t border-white/5 my-2"></div>
+                            <p class="flex justify-between"><span class="opacity-80">Y2净利:</span> <strong class="text-lg text-white">> 1 亿美元</strong></p>
+                        </div>
+                    </div>
+
+                    <div class="tech-card p-8 text-center border-gasgx-cyan bg-[#080C14]">
+                        <div class="w-20 h-20 bg-gradient-to-br from-gasgx-green to-gasgx-cyan flex items-center justify-center text-2xl font-black mx-auto mb-6 text-gasgx-bg shadow-[0_0_30px_rgba(0,242,96,0.6)]">Y3</div>
+                        <h3 class="text-xl font-bold text-white mb-2">冲刺上市规模</h3>
+                        <p class="text-4xl font-black text-white mb-6 drop-shadow-lg">300 MW</p>
+                        <div class="text-left text-sm text-gasgx-textSub space-y-4 tech-panel-inset p-6 border border-gasgx-cyan/20">
+                            <p class="flex justify-between"><span class="opacity-80">新增装机:</span> <span class="text-white font-bold">+100MW</span></p>
+                            <p class="flex justify-between"><span class="opacity-80">即时分红:</span> <span class="text-white font-bold">充裕现金流</span></p>
+                            <div class="border-t border-white/5 my-2"></div>
+                            <p class="flex justify-between"><span class="opacity-80">Y3净利:</span> <strong class="text-lg text-gasgx-green">> 1.5 亿美元</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: 市值重估 -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="text-4xl font-extrabold text-white flex items-center"><span class="w-2 h-8 bg-gasgx-green mr-4 shadow-[0_0_10px_#00F260]"></span>五、 搁浅气源方市值重估 (并表逻辑)</h2>
+                <p class="text-gasgx-textSub text-lg mt-3 ml-6">仅以首期 100MW (<strong class="text-gasgx-cyan">保守以 $0.7 气价，51%控股方案</strong>) 并表计算，账面估值提升效应已极其明显。</p>
+            </div>
+            <div class="slide-content">
+                <div class="tech-card p-12 overflow-hidden relative border border-gasgx-border h-[380px] flex items-center">
+                    <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTAgMGg0MHY0MEgweiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik0wIDEwaDQwTTEwIDB2NDAiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAyKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9zdmc+')] opacity-50"></div>
+                    
+                    <div class="flex items-center justify-between gap-4 text-center relative z-10 w-full">
+                        <div class="p-8 tech-panel-inset flex-1 h-[220px] flex flex-col justify-center">
+                            <p class="text-sm font-medium text-gasgx-textSub mb-4">气源方当前总市值</p>
+                            <p class="text-3xl font-black text-white">~ 4600 <span class="text-xl font-normal">万美元</span></p>
+                            <div class="mt-4"><span class="text-xs text-red-400 bg-red-400/10 px-3 py-1 border border-red-400/20">财报承压 / 亏损</span></div>
+                        </div>
+                        
+                        <div class="w-12 h-12 bg-[#1A2436] flex items-center justify-center text-2xl text-gasgx-textSub border border-white/5 shadow-inner flex-shrink-0">➕</div>
+                        
+                        <div class="p-8 bg-gradient-to-b from-[#152336] to-[#0D1524] border border-gasgx-cyan/40 relative shadow-[0_0_20px_rgba(5,213,255,0.05)] flex-1 h-[240px] flex flex-col justify-center transform -translate-y-4">
+                            <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gasgx-cyan text-gasgx-bg text-sm font-black px-4 py-1.5 shadow-[0_5px_15px_rgba(5,213,255,0.4)] whitespace-nowrap">并表净利池</div>
+                            <p class="text-sm font-medium text-gasgx-textSub mb-4">合资净利 (持51%)</p>
+                            <p class="text-3xl font-black text-gasgx-cyan glow-text">2315 <span class="text-xl font-normal opacity-80">万美元 / 年</span></p>
+                            <p class="text-xs text-gasgx-textSub mt-4">稳定现金流注入</p>
+                        </div>
+                        
+                        <div class="w-12 h-12 bg-[#1A2436] flex items-center justify-center text-2xl text-gasgx-textSub border border-white/5 shadow-inner flex-shrink-0">✖️</div>
+                        
+                        <div class="p-8 tech-panel-inset flex-1 h-[220px] flex flex-col justify-center">
+                            <p class="text-sm font-medium text-gasgx-textSub mb-4">港股基建 P/E 估值</p>
+                            <p class="text-3xl font-black text-white">10x - 12x</p>
+                            <div class="mt-4"><span class="text-xs text-gasgx-cyan bg-gasgx-cyan/10 px-3 py-1 border border-gasgx-cyan/20">扭亏后的正常倍数</span></div>
+                        </div>
+                        
+                        <div class="w-12 h-12 bg-[#1A2436] flex items-center justify-center text-2xl text-gasgx-textSub border border-white/5 shadow-inner flex-shrink-0">🟰</div>
+                        
+                        <div class="p-8 bg-gradient-to-br from-gasgx-green/20 to-[#0A101A] border border-gasgx-green shadow-[0_0_30px_rgba(0,242,96,0.2)] flex-[1.3] h-[260px] flex flex-col justify-center transform scale-105">
+                            <p class="text-sm text-gasgx-green mb-4 font-bold tracking-widest uppercase">催化后总市值</p>
+                            <p class="text-5xl font-black text-white drop-shadow-lg">> 2.7 亿 <span class="text-2xl font-normal">美元</span></p>
+                            <div class="mt-6 pt-4 border-t border-gasgx-green/30">
+                                <span class="text-sm text-gasgx-bg font-black bg-gasgx-green px-4 py-2 shadow-[0_0_15px_rgba(0,242,96,0.5)]">拉升超 5 倍</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: 纳斯达克退出 Y1/Y2 -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="text-4xl font-extrabold text-white flex items-center"><span class="w-2 h-8 bg-gasgx-cyan mr-4 shadow-[0_0_10px_#05D5FF]"></span>六、 三年纳斯达克 (NASDAQ) 敲钟战略 (1/2)</h2>
+                <p class="text-gasgx-textSub text-lg mt-3 ml-6">以 SEC 监管标准设计顶层架构，奠定资本市场变现基础。</p>
+            </div>
+            <div class="slide-content">
+                <div class="grid grid-cols-2 gap-8 h-[380px]">
+                    <!-- Y1 -->
+                    <div class="tech-panel-inset p-8 border-t-4 border-t-gasgx-cyan flex flex-col">
+                        <h3 class="text-2xl font-black text-white flex items-center mb-8"><span class="w-10 h-10 bg-gasgx-cyan/20 border border-gasgx-cyan/50 text-gasgx-cyan flex items-center justify-center mr-4 shadow-[0_0_15px_rgba(5,213,255,0.3)] text-lg">Y1</span> 架构与合规地基</h3>
+                        <ul class="space-y-6 text-gasgx-textSub text-lg flex-grow">
+                            <li class="flex items-start bg-white/5 p-4 border border-white/5"><span class="text-gasgx-green text-xl mr-4 mt-1">✓</span> <span><strong class="text-white block mb-1">设立离岸主体 (HoldCo)：</strong> 在开曼或特拉华设立拟上市主体，100% 控股加拿大运营实体。</span></li>
+                            <li class="flex items-start bg-white/5 p-4 border border-white/5"><span class="text-gasgx-green text-xl mr-4 mt-1">✓</span> <span><strong class="text-white block mb-1">AB 股双重架构：</strong> 搁浅气源方持高表决权 B 股（保并表），BITLINK 掌高收益权 A 股。</span></li>
+                            <li class="flex items-start bg-white/5 p-4 border border-white/5"><span class="text-gasgx-green text-xl mr-4 mt-1">✓</span> <span><strong class="text-white block mb-1">PCAOB 审计：</strong> 资金汇入首日即聘用四大，按 US GAAP 建账。</span></li>
+                        </ul>
+                    </div>
+                    <!-- Y2 -->
+                    <div class="tech-panel-inset p-8 border-t-4 border-t-gasgx-green flex flex-col">
+                        <h3 class="text-2xl font-black text-white flex items-center mb-8"><span class="w-10 h-10 bg-gasgx-green/20 border border-gasgx-green/50 text-gasgx-green flex items-center justify-center mr-4 shadow-[0_0_15px_rgba(0,242,96,0.3)] text-lg">Y2</span> 科技叙事与扩张</h3>
+                        <ul class="space-y-6 text-gasgx-textSub text-lg flex-grow">
+                            <li class="flex items-start bg-white/5 p-4 border border-white/5"><span class="text-gasgx-green text-xl mr-4 mt-1">✓</span> <span><strong class="text-white block mb-1">ESG 算力叙事：</strong> 包装“消纳伴生气”减排故事，强调智能微电网技术，迎合华尔街高估值偏好 (20x+ P/E)。</span></li>
+                            <li class="flex items-start bg-white/5 p-4 border border-white/5"><span class="text-gasgx-green text-xl mr-4 mt-1">✓</span> <span><strong class="text-white block mb-1">异地复制：</strong> 依靠内生现金流开启 200MW 项目，向资本市场证明模型的高可扩展性。</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: 纳斯达克退出 Y3 -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="text-4xl font-extrabold text-white flex items-center"><span class="w-2 h-8 bg-amber-400 mr-4 shadow-[0_0_10px_#FBBF24]"></span>六、 三年纳斯达克 (NASDAQ) 敲钟战略 (2/2)</h2>
+                <p class="text-gasgx-textSub text-lg mt-3 ml-6">用一次性巨额资本利得换取前期并表权，完成终极变现。</p>
+            </div>
+            <div class="slide-content">
+                <div class="tech-card p-10 border border-gasgx-cyan/30 relative overflow-hidden h-[380px] flex flex-col justify-center">
+                    <div class="absolute right-0 bottom-0 w-[400px] h-[400px] bg-gasgx-cyan/10 blur-[80px] pointer-events-none"></div>
+                    <h3 class="text-2xl font-black text-white flex items-center mb-8 relative z-10"><span class="w-10 h-10 bg-amber-400/20 border border-amber-400/50 text-amber-400 flex items-center justify-center mr-4 shadow-[0_0_15px_rgba(251,191,36,0.3)] text-lg">Y3</span> 股东超额收益核算 <span class="text-base font-normal text-gasgx-textSub ml-4 border border-white/10 px-3 py-1 bg-black/30">(以 300MW 规模为例)</span></h3>
+                    
+                    <div class="grid grid-cols-2 gap-12 items-center relative z-10">
+                        <div class="space-y-8">
+                            <div class="flex justify-between items-end border-b border-white/10 pb-4">
+                                <div class="flex flex-col">
+                                    <span class="text-gasgx-textSub font-medium text-lg">纳斯达克估值预测</span>
+                                    <span class="text-sm text-slate-500 mt-1">(假设 1.5亿净利, 20x P/E)</span>
+                                </div>
+                                <strong class="text-white text-3xl drop-shadow-md">30 亿 <span class="text-xl font-normal opacity-80">美元</span></strong>
+                            </div>
+                            <div class="flex justify-between items-end border-b border-white/10 pb-4">
+                                <div class="flex flex-col">
+                                    <span class="text-gasgx-textSub font-medium text-lg">搁浅气源方持股比例</span>
+                                    <span class="text-sm text-slate-500 mt-1">(稀释及结构调整后)</span>
+                                </div>
+                                <strong class="text-white text-3xl drop-shadow-md">25 %</strong>
+                            </div>
+                            <div class="flex justify-between items-center pt-4">
+                                <span class="text-gasgx-cyan font-black text-2xl">最终账面退出价值</span>
+                                <strong class="text-gasgx-green text-5xl glow-text">7.5 亿 <span class="text-2xl font-normal opacity-80">美元</span></strong>
+                            </div>
+                        </div>
+                        <div class="bg-gradient-to-br from-[#121E2D] to-[#0A101A] p-8 border border-gasgx-cyan/40 shadow-[0_0_20px_rgba(5,213,255,0.05)] h-full flex flex-col justify-center">
+                            <p class="text-lg text-gasgx-textSub mb-6 leading-relaxed">
+                                相较于搁浅气源方现今仅 <strong class="text-white bg-white/10 px-2 py-1 text-base">4600万美元</strong> 的市值，该项目分拆上市将创造超 <strong class="text-gasgx-green text-2xl mx-1 glow-text">16 倍</strong> 的惊人账面溢价资产。
+                            </p>
+                            <div class="h-px w-full bg-gradient-to-r from-transparent via-gasgx-cyan/50 to-transparent my-6"></div>
+                            <p class="text-base text-gasgx-cyan font-medium leading-relaxed">
+                                🎯 <strong class="text-white">触发联交所 PN15 指引：</strong><br>董事会可将这笔 7.5亿美元股票转化为 <span class="underline decoration-gasgx-cyan decoration-2 underline-offset-4 font-bold text-white text-lg">特别股息 (Special Dividend)</span> 向港股股东派发，完成史诗级运作。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 强化 PPT 导航组件 -->
+    <div id="ppt-controls">
+        <button id="btn-prev" title="上一页 (左方向键)">◀</button>
+        <span id="slide-counter">1 / 10</span>
+        <button id="btn-next" title="下一页 (右方向键或空格)">▶</button>
+    </div>
+
+    <script>
+        // === 全局推演状态，暴露给外部 onclick 绑定 ===
+        window.currentGas = 0.0;
+        window.currentPwr = 0.0625;
+        window.currentCap = 3200;
+
+        // 立即执行的自调用函数 (彻底废弃 DOMContentLoaded 以防在预览环境中失效)
+        (function initPPT() {
+            
+            // === 1. 核心翻页引擎 ===
+            const slides = document.querySelectorAll('.slide');
+            let currentSlide = 0;
+            let isAnimating = false; // 滚轮防抖锁
+
+            function renderSlide() {
+                slides.forEach((s, i) => {
+                    if (i === currentSlide) {
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
+                const counter = document.getElementById('slide-counter');
+                if(counter) counter.textContent = (currentSlide + 1) + ' / ' + slides.length;
+            }
+
+            function goNext() {
+                if (currentSlide < slides.length - 1) { currentSlide++; renderSlide(); }
+            }
+            function goPrev() {
+                if (currentSlide > 0) { currentSlide--; renderSlide(); }
+            }
+
+            // 初始化渲染第一页
+            renderSlide();
+
+            // === 2. 事件绑定引擎 ===
+            
+            // A. 控制台按钮点击
+            const btnPrev = document.getElementById('btn-prev');
+            const btnNext = document.getElementById('btn-next');
+            if(btnPrev) btnPrev.addEventListener('click', goPrev);
+            if(btnNext) btnNext.addEventListener('click', goNext);
+
+            // B. 键盘方向键 / 空格
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' || e.key === ' ') {
+                    e.preventDefault(); goNext();
+                } else if (e.key === 'ArrowLeft') {
+                    e.preventDefault(); goPrev();
+                }
+            });
+
+            // C. 鼠标滚轮 (加入 50px 防抖阈值，防止太灵敏)
+            window.addEventListener('wheel', (e) => {
+                if (isAnimating) return;
+                if (e.deltaY > 50) {
+                    goNext();
+                    isAnimating = true; setTimeout(() => isAnimating = false, 500);
+                } else if (e.deltaY < -50) {
+                    goPrev();
+                    isAnimating = true; setTimeout(() => isAnimating = false, 500);
+                }
+            });
+
+            // D. 移动端触屏滑动 (Swipe)
+            let touchStartX = 0;
+            window.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; });
+            window.addEventListener('touchend', e => {
+                let touchEndX = e.changedTouches[0].screenX;
+                if (touchStartX - touchEndX > 50) goNext(); // 左滑 (下一页)
+                if (touchStartX - touchEndX < -50) goPrev(); // 右滑 (上一页)
+            });
+
+            // === 3. 全屏等比缩放引擎 (Letterbox) ===
+            function resizeDeck() {
+                const container = document.getElementById('deck-container');
+                if(!container) return;
+                const windowWidth = window.innerWidth;
+                const windowHeight = window.innerHeight;
+                const targetRatio = 1280 / 720;
+                const windowRatio = windowWidth / windowHeight;
+                
+                let scale;
+                if (windowRatio > targetRatio) {
+                    scale = windowHeight / 720; // 屏幕更宽，基于高度缩放
+                } else {
+                    scale = windowWidth / 1280; // 屏幕更窄，基于宽度缩放
+                }
+                scale = scale * 0.98; // 预留安全边距，防止贴死边缘
+                container.style.transform = `translate(-50%, -50%) scale(${scale})`;
+            }
+            window.addEventListener('resize', resizeDeck);
+            resizeDeck(); // 初始化尺寸
+
+            // === 4. 业务图表与计算逻辑 (包裹在 Try-Catch 中，确保图表报错也不影响翻页) ===
+            try {
+                if (typeof Chart !== 'undefined') {
+                    Chart.defaults.color = '#94A3B8';
+                    Chart.defaults.borderColor = 'rgba(255,255,255,0.05)';
+                    Chart.defaults.font.family = "'Noto Sans SC', sans-serif";
+
+                    // 静态图表 (Slide 4)
+                    const canvasWin = document.getElementById('slideWinWinChart');
+                    if (canvasWin) {
+                        new Chart(canvasWin.getContext('2d'), {
+                            type: 'bar',
+                            data: {
+                                labels: ['模式A ($3纯卖)', '模式B (51%合资)', '模式C (70%合资)'],
+                                datasets: [
+                                    { label: '气源方收益', data: [2839, 2977, 3641], backgroundColor: '#00F260', borderWidth: 1, borderColor: 'rgba(0, 242, 96, 0.5)' },
+                                    { label: 'BITLINK 收益', data: [2362, 2224, 1560], backgroundColor: '#05D5FF', borderWidth: 1, borderColor: 'rgba(5, 213, 255, 0.5)' }
+                                ]
+                            },
+                            options: {
+                                responsive: true, maintainAspectRatio: false,
+                                plugins: {
+                                    legend: { position: 'bottom', labels: { color: '#F8FAFC', font: { size: 14 } } },
+                                    tooltip: { backgroundColor: 'rgba(15, 22, 36, 0.95)', titleColor: '#fff', bodyColor: '#cbd5e1' }
+                                },
+                                scales: {
+                                    y: { beginAtZero: true, title: { display: true, text: '万美元' } },
+                                    x: { grid: { display: false } }
+                                }
+                            }
+                        });
+                    }
+
+                    // 动态图表 (Slide 5)
+                    let dynChart = null;
+                    const canvasDyn = document.getElementById('slideDynamicChart');
+                    
+                    if(canvasDyn) {
+                        const ctxDyn = canvasDyn.getContext('2d');
+                        let gradGreen = ctxDyn.createLinearGradient(0, 0, 0, 200);
+                        gradGreen.addColorStop(0, '#00F260'); gradGreen.addColorStop(1, 'rgba(0, 242, 96, 0.2)');
+                        
+                        dynChart = new Chart(ctxDyn, {
+                            type: 'bar',
+                            data: {
+                                labels: ['总收入(Gross)', '燃料成本(Fuel)', '净利润(Net)'],
+                                datasets: [{
+                                    label: '金额(万美元)', data: [0, 0, 0],
+                                    backgroundColor: ['rgba(148, 163, 184, 0.6)', 'rgba(244, 63, 94, 0.6)', gradGreen],
+                                    borderColor: ['rgba(148, 163, 184, 1)', 'rgba(244, 63, 94, 1)', '#00F260'],
+                                    borderWidth: 1, barPercentage: 0.5
+                                }]
+                            },
+                            options: {
+                                responsive: true, maintainAspectRatio: false,
+                                plugins: { legend: { display: false } },
+                                scales: {
+                                    y: { beginAtZero: true },
+                                    x: { grid: { display: false } }
+                                }
+                            }
+                        });
+                    }
+
+                    // 挂载计算器更新方法到全局
+                    window.updateSlideSimulator = function(gas, pwr, cap) {
+                        window.currentGas = gas; window.currentPwr = pwr; window.currentCap = cap;
+
+                        // 更新控制台 UI
+                        ['s-gas-3', 's-gas-07', 's-gas-0'].forEach(id => {
+                            let el = document.getElementById(id);
+                            if(el) el.className = 'ppt-sim-btn py-2 px-4 text-xs font-bold border border-gasgx-border bg-[#121A28] text-gasgx-textSub flex justify-between cursor-pointer relative hover:brightness-125 z-50';
+                        });
+                        let gId = window.currentGas === 3.0 ? 's-gas-3' : (window.currentGas === 0.7 ? 's-gas-07' : 's-gas-0');
+                        let gClass = window.currentGas === 0.0 ? 'border-gasgx-green bg-gasgx-green/10 text-gasgx-green shadow-[0_0_10px_rgba(0,242,96,0.15)]' : 'border-gasgx-cyan bg-gasgx-cyan/10 text-gasgx-cyan shadow-[0_0_10px_rgba(5,213,255,0.15)]';
+                        if(window.currentGas===3.0) gClass = 'border-slate-500 bg-slate-800 text-white';
+                        let elG = document.getElementById(gId);
+                        if(elG) elG.className = `ppt-sim-btn py-2 px-4 text-xs font-bold border flex justify-between cursor-pointer relative hover:brightness-125 z-50 ${gClass}`;
+
+                        ['s-pwr-625', 's-pwr-700'].forEach(id => {
+                            let el = document.getElementById(id);
+                            if(el) el.className = 'ppt-sim-pwr py-2 text-xs font-bold border border-gasgx-border bg-[#121A28] text-gasgx-textSub cursor-pointer relative hover:brightness-125 z-50';
+                        });
+                        let pId = window.currentPwr === 0.0625 ? 's-pwr-625' : 's-pwr-700';
+                        let elP = document.getElementById(pId);
+                        if(elP) elP.className = 'ppt-sim-pwr py-2 text-xs font-bold border border-gasgx-cyan bg-gasgx-cyan/10 text-gasgx-cyan shadow-[0_0_10px_rgba(5,213,255,0.15)] cursor-pointer relative hover:brightness-125 z-50';
+
+                        ['s-cap-45', 's-cap-32'].forEach(id => {
+                            let el = document.getElementById(id);
+                            if(el) el.className = 'ppt-sim-cap py-2 text-xs font-bold border border-gasgx-border bg-[#121A28] text-gasgx-textSub cursor-pointer relative hover:brightness-125 z-50';
+                        });
+                        let cId = window.currentCap === 4500 ? 's-cap-45' : 's-cap-32';
+                        let cClass = window.currentCap === 3200 ? 'border-amber-400 bg-amber-400/10 text-amber-400 shadow-[0_0_10px_rgba(251,191,36,0.15)]' : 'border-gasgx-cyan bg-gasgx-cyan/10 text-gasgx-cyan';
+                        let elC = document.getElementById(cId);
+                        if(elC) elC.className = `ppt-sim-cap py-2 text-xs font-bold border cursor-pointer relative hover:brightness-125 z-50 ${cClass}`;
+
+                        // 核心计算公式
+                        const grossRev = Math.round(83220 * window.currentPwr); 
+                        let fuelCost = 0; let equity = 0.70;
+                        if (window.currentGas === 3.0) { fuelCost = 2839; equity = 0.0; } 
+                        if (window.currentGas === 0.7) { fuelCost = 662; equity = 0.51; } 
+                        if (window.currentGas === 0.0) { fuelCost = 0; equity = 0.70; }   
+                        
+                        const netProfit = grossRev - fuelCost;
+                        const paybackYears = window.currentCap / netProfit;
+                        const profit166 = Math.round(netProfit * equity);
+                        const y1Cash = Math.max(0, netProfit - window.currentCap);
+
+                        // 赋值面板
+                        if(document.getElementById('s-val-net')) document.getElementById('s-val-net').innerHTML = `${netProfit} <span class="text-sm font-normal">万</span>`;
+                        if(document.getElementById('s-val-share')) document.getElementById('s-val-share').innerHTML = `${profit166} <span class="text-sm font-normal">万</span>`;
+                        if(document.getElementById('s-val-eq')) document.getElementById('s-val-eq').innerText = window.currentGas === 3.0 ? '无合资' : `${Math.round(equity*100)}%`;
+                        if(document.getElementById('s-val-pay')) document.getElementById('s-val-pay').innerHTML = `${paybackYears.toFixed(2)} <span class="text-sm font-normal">年</span>`;
+                        if(document.getElementById('s-val-cash')) document.getElementById('s-val-cash').innerHTML = `${y1Cash} <span class="text-sm font-normal">万</span>`;
+
+                        // 图表重绘
+                        if(dynChart) {
+                            const ctx = document.getElementById('slideDynamicChart').getContext('2d');
+                            let grad = ctx.createLinearGradient(0, 0, 0, 200);
+                            if(window.currentGas === 0.0) {
+                                grad.addColorStop(0, '#00F260'); grad.addColorStop(1, 'rgba(0, 242, 96, 0.2)');
+                                dynChart.data.datasets[0].borderColor[2] = '#00F260';
+                            } else {
+                                grad.addColorStop(0, '#05D5FF'); grad.addColorStop(1, 'rgba(5, 213, 255, 0.2)');
+                                dynChart.data.datasets[0].borderColor[2] = '#05D5FF';
+                            }
+                            dynChart.data.datasets[0].data = [grossRev, fuelCost, netProfit];
+                            dynChart.data.datasets[0].backgroundColor[2] = grad;
+                            dynChart.update();
+                        }
+                    };
+
+                    // 初始化触发一次模拟器计算
+                    if (typeof window.updateSlideSimulator === 'function') {
+                        setTimeout(() => { window.updateSlideSimulator(0.0, 0.0625, 3200); }, 50);
+                    }
+                }
+            } catch (e) {
+                console.error("Chart 渲染发生错误，但PPT翻页功能已保全！", e);
+            }
+        })();
+    </script>
+</body>
+</html>
+```
