@@ -10,7 +10,7 @@
         body, html {
             height: 100%;
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            background-color: #020202; /* 极深的背景，衬托代码雨 */
+            background-color: #020202; 
             color: #fff;
             overflow: hidden;
             cursor: none; 
@@ -54,10 +54,9 @@
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: 0;
-            filter: blur(0.4px); /* 电影级的微弱柔光效果 */
+            filter: blur(0.4px); 
         }
 
-        /* 环境全局光晕 */
         #mouse-glow {
             position: absolute;
             width: 400px; height: 400px;
@@ -122,7 +121,13 @@
             margin-right: -15px; 
             color: #ffffff;
             text-shadow: 0 0 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 255, 204, 0.3);
+            min-height: 8vw; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+
+        /* 新增：终端故障闪烁特效 */
         .subtitle {
             font-family: monospace;
             font-size: 13px;
@@ -131,6 +136,13 @@
             margin-bottom: 50px;
             text-transform: uppercase;
             text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            animation: glitch-flicker 4s infinite;
+        }
+
+        @keyframes glitch-flicker {
+            0%, 96%, 98%, 100% { opacity: 1; transform: translateX(0); }
+            97% { opacity: 0.5; transform: translateX(-2px); color: #00ffcc; }
+            99% { opacity: 0.8; transform: translateX(2px); }
         }
 
         /* ================= 5. 悬浮 UI 层 ================= */
@@ -196,7 +208,7 @@
     <div id="mouse-glow"></div>
 
     <div class="center-content" id="main-content">
-        <h1>TENGWEI</h1>
+        <h1 data-value="TENGWEI"></h1>
         <div class="subtitle">Software Engineer | System Architect</div>
     </div>
 
@@ -220,7 +232,35 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // ================= 1. 模拟加载器 =================
+            const matrixCharsSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*日ﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾘｱﾎﾃﾏｹﾒｴｶｷﾑﾕﾗｾﾈｽﾀﾇﾍ';
+            
+            // ================= 1. 优化版：慢速字符乱码破译 =================
+            function startCyberDecrypt() {
+                const titleElement = document.querySelector('h1');
+                const finalStr = titleElement.getAttribute('data-value');
+                let iterations = 0;
+                
+                titleElement.innerText = '';
+                
+                const decryptInterval = setInterval(() => {
+                    titleElement.innerText = finalStr.split('').map((char, index) => {
+                        // 增大了分母(从4改为8)，让锁定过程变慢，更有黑客解密的沉重感
+                        if (index < iterations / 8) {
+                            return finalStr[index];
+                        }
+                        return matrixCharsSet[Math.floor(Math.random() * matrixCharsSet.length)];
+                    }).join('');
+                    
+                    iterations++;
+                    
+                    if (iterations >= finalStr.length * 8) {
+                        clearInterval(decryptInterval);
+                        titleElement.innerText = finalStr;
+                    }
+                }, 50); // 稍微放慢了乱码跳动帧率
+            }
+
+            // ================= 2. 模拟加载器 =================
             let progress = 0;
             const progressText = document.getElementById('progress-text');
             const progressFill = document.getElementById('progress-fill');
@@ -236,6 +276,7 @@
                         loader.style.opacity = '0';
                         setTimeout(() => {
                             mainContent.classList.add('loaded');
+                            startCyberDecrypt();
                             setTimeout(() => { loader.remove(); }, 1000);
                         }, 300);
                     }, 400);
@@ -244,7 +285,7 @@
                 progressFill.style.width = `${progress}%`;
             }, 40);
 
-            // ================= 2. 鼠标与星空球逻辑 =================
+            // ================= 3. 鼠标、星空球与随动波浪尾迹 =================
             const cursor = document.getElementById('custom-cursor');
             const cursorTrail = document.getElementById('cursor-trail');
             const mouseGlow = document.getElementById('mouse-glow');
@@ -253,6 +294,10 @@
             let mouseY = window.innerHeight / 2;
             let trailX = mouseX;
             let trailY = mouseY;
+            
+            let lastRippleX = mouseX;
+            let lastRippleY = mouseY;
+            let ripplesArray = []; 
 
             window.addEventListener('mousemove', (event) => {
                 mouseX = event.clientX;
@@ -262,39 +307,47 @@
                 cursor.style.top = mouseY + 'px';
                 mouseGlow.style.left = mouseX + 'px';
                 mouseGlow.style.top = mouseY + 'px';
+
+                // 生成随动波浪尾迹
+                let dist = Math.hypot(mouseX - lastRippleX, mouseY - lastRippleY);
+                if (dist > 35) { 
+                    ripplesArray.push({
+                        x: mouseX, 
+                        y: mouseY, 
+                        radius: 5, 
+                        alpha: 0.15, 
+                        speed: 1.5,  
+                        width: 0.8
+                    });
+                    lastRippleX = mouseX;
+                    lastRippleY = mouseY;
+                }
             });
 
-            // ================= 3. 黑客帝国代码雨核心逻辑 =================
+            // ================= 4. 黑客帝国代码雨 =================
             const canvas = document.getElementById('matrixCanvas');
             const ctx = canvas.getContext('2d');
             
             let width = canvas.width = window.innerWidth;
             let height = canvas.height = window.innerHeight;
 
-            // 包含拉丁字母、数字和半角日文片假名（经典的矩阵字符集）
-            const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*日ﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾘｱﾎﾃﾏｹﾒｴｶｷﾑﾕﾗｾﾈｽﾀﾇﾍ'.split('');
+            const letters = matrixCharsSet.split('');
             const fontSize = 14;
             let columns = Math.floor(width / fontSize);
             let drops = [];
             
-            // 初始化每一列的坠落高度
             for (let x = 0; x < columns; x++) {
-                drops[x] = Math.random() * -100; // 随机初始高度，错落有致
+                drops[x] = Math.random() * -100; 
             }
 
-            let ripplesArray = [];
-
-            // 点击事件：产生波纹 + 代码雨干扰重置
             window.addEventListener('mousedown', (e) => {
                 cursor.classList.add('clicked');
                 
-                // 1. 发射视觉波纹
-                ripplesArray.push({ x: e.clientX, y: e.clientY, radius: 0, alpha: 1, speed: 6, width: 2 });
+                ripplesArray.push({ x: e.clientX, y: e.clientY, radius: 0, alpha: 0.8, speed: 5, width: 2 });
                 setTimeout(() => {
-                    ripplesArray.push({ x: e.clientX, y: e.clientY, radius: 0, alpha: 0.6, speed: 4, width: 1 });
+                    ripplesArray.push({ x: e.clientX, y: e.clientY, radius: 0, alpha: 0.4, speed: 3.5, width: 1 });
                 }, 100);
 
-                // 2. 物理干扰：点击区域内的代码流被瞬间推回上方（数据逆流）
                 for (let i = 0; i < drops.length; i++) {
                     let dropX = i * fontSize;
                     let dropY = drops[i] * fontSize;
@@ -303,7 +356,6 @@
                     let distance = Math.sqrt(dx * dx + dy * dy);
                     
                     if (distance < 200) {
-                        // 距离中心越近，被推回得越高
                         drops[i] -= Math.floor((200 - distance) / 5); 
                     }
                 }
@@ -313,7 +365,6 @@
                 cursor.classList.remove('clicked');
             });
 
-            // 绘制数字波纹
             function drawRipples() {
                 for (let i = 0; i < ripplesArray.length; i++) {
                     let r = ripplesArray[i];
@@ -324,14 +375,12 @@
                     ctx.stroke();
 
                     r.radius += r.speed; 
-                    r.alpha -= 0.012; // 波纹消散
+                    r.alpha -= 0.01; 
                 }
                 ripplesArray = ripplesArray.filter(r => r.alpha > 0);
             }
 
-            // 绘制代码雨
             function drawMatrix() {
-                // 使用半透明黑色填充，保留上一帧的残影，形成拖尾效果
                 ctx.fillStyle = 'rgba(2, 2, 2, 0.08)';
                 ctx.fillRect(0, 0, width, height);
 
@@ -339,75 +388,52 @@
                 ctx.textAlign = 'center';
 
                 for (let i = 0; i < drops.length; i++) {
-                    // 随机选择字符
                     const text = letters[Math.floor(Math.random() * letters.length)];
-                    
                     let dropX = i * fontSize;
                     let dropY = drops[i] * fontSize;
-
-                    // 计算鼠标与当前字符的距离，实现探照灯交互
                     let dx = mouseX - dropX;
                     let dy = mouseY - dropY;
                     let distance = Math.sqrt(dx * dx + dy * dy);
 
                     if (distance < 80) {
-                        // 鼠标周围的字符高亮为白色，并略微抖动（黑客解码感）
                         ctx.fillStyle = '#ffffff';
-                        dropX += (Math.random() - 0.5) * 2;
+                        dropX += (Math.random() - 0.5) * 2; 
                     } else if (Math.random() > 0.98) {
-                        // 极小概率随机闪烁成白色
                         ctx.fillStyle = '#ffffff';
                     } else {
-                        // 默认的赛博青绿色
                         ctx.fillStyle = '#00ffcc';
                     }
 
-                    // 绘制字符
                     ctx.fillText(text, dropX + fontSize/2, dropY);
 
-                    // 触底或随机重置到顶部
                     if (dropY > height && Math.random() > 0.975) {
                         drops[i] = 0;
                     }
-                    
-                    // 下落速度控制
                     drops[i] += 0.9;
                 }
             }
 
-            // 动画主循环
             function animate() {
-                // 限制帧率以获得经典的电影代码雨速度感
-                setTimeout(() => {
-                    requestAnimationFrame(animate);
-                }, 30); // 调整此数值可改变下落整体速度 (毫秒)
+                setTimeout(() => { requestAnimationFrame(animate); }, 30); 
                 
-                // 星空球弹性拖尾更新
                 trailX += (mouseX - trailX) * 0.2;
                 trailY += (mouseY - trailY) * 0.2;
                 cursorTrail.style.left = trailX + 'px';
                 cursorTrail.style.top = trailY + 'px';
 
-                // 核心渲染
                 drawMatrix();
-                drawRipples();
+                drawRipples(); 
             }
 
-            // 窗口自适应
             window.addEventListener('resize', () => {
                 width = canvas.width = window.innerWidth;
                 height = canvas.height = window.innerHeight;
                 columns = Math.floor(width / fontSize);
-                // 补充新增列的数组长度
-                while(drops.length < columns) {
-                    drops.push(Math.random() * -100);
-                }
+                while(drops.length < columns) { drops.push(Math.random() * -100); }
             });
 
-            // 启动
             animate();
             
-            // UI 悬浮反馈保持不变
             document.querySelectorAll('.ui-element').forEach(el => {
                 el.addEventListener('mouseenter', () => {
                     cursorTrail.style.width = '50px';
