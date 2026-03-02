@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TENGWEI - Interactive Matrix</title>
+    <title>TENGWEI - Matrix Rain</title>
     <style>
         /* ================= 基础重置 ================= */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body, html {
             height: 100%;
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            background-color: #030303; 
+            background-color: #020202; /* 极深的背景，衬托代码雨 */
             color: #fff;
             overflow: hidden;
             cursor: none; 
@@ -49,19 +49,19 @@
             transition: width 0.1s;
         }
 
-        /* ================= 2. 动态 Canvas 矩阵层 ================= */
+        /* ================= 2. 画布层 ================= */
         #matrixCanvas {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: 0;
-            filter: blur(0.3px); 
+            filter: blur(0.4px); /* 电影级的微弱柔光效果 */
         }
 
         /* 环境全局光晕 */
         #mouse-glow {
             position: absolute;
-            width: 500px; height: 500px;
-            background: radial-gradient(circle, rgba(0, 255, 204, 0.05) 0%, transparent 60%);
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(0, 255, 204, 0.08) 0%, transparent 60%);
             border-radius: 50%;
             pointer-events: none;
             transform: translate(-50%, -50%);
@@ -79,10 +79,10 @@
             pointer-events: none;
             z-index: 10000;
             box-shadow: 0 0 10px #fff, 0 0 20px #00ffcc;
-            transition: transform 0.1s; /* 点击时的微缩放 */
+            transition: transform 0.1s; 
         }
         #custom-cursor.clicked {
-            transform: translate(-50%, -50%) scale(0.5);
+            transform: translate(-50%, -50%) scale(0.4);
         }
 
         #cursor-trail {
@@ -121,15 +121,16 @@
             margin-bottom: 20px;
             margin-right: -15px; 
             color: #ffffff;
-            text-shadow: 0 0 30px rgba(0, 255, 204, 0.4);
+            text-shadow: 0 0 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 255, 204, 0.3);
         }
         .subtitle {
             font-family: monospace;
             font-size: 13px;
             letter-spacing: 5px;
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(255, 255, 255, 0.7);
             margin-bottom: 50px;
             text-transform: uppercase;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
         }
 
         /* ================= 5. 悬浮 UI 层 ================= */
@@ -150,10 +151,11 @@
             font-family: monospace;
             text-transform: uppercase;
             letter-spacing: 2px;
-            color: rgba(255, 255, 255, 0.6);
+            color: rgba(255, 255, 255, 0.7);
             transition: all 0.3s ease;
             text-decoration: none;
             cursor: none; 
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
         }
         .ui-element:hover { 
             color: #00ffcc; 
@@ -170,17 +172,18 @@
             right: 40px;
             text-align: right;
             font-size: 10px;
-            color: rgba(255,255,255,0.2);
+            color: rgba(255,255,255,0.4);
             font-family: monospace;
             pointer-events: none;
             line-height: 1.5;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
         }
     </style>
 </head>
 <body>
 
     <div id="loader">
-        <div class="progress-text" id="progress-text">SYS.INIT // 0%</div>
+        <div class="progress-text" id="progress-text">MATRIX.INIT // 0%</div>
         <div class="progress-bar">
             <div class="progress-fill" id="progress-fill"></div>
         </div>
@@ -210,9 +213,9 @@
     </div>
 
     <div class="coordinates">
-        DAT.STREAM // ACTIVE<br>
+        SYS.MATRIX // OVERRIDE<br>
         POS: 45.4215° N, 75.6972° W<br>
-        STATUS: SECURE
+        STATUS: ENCRYPTED
     </div>
 
     <script>
@@ -237,7 +240,7 @@
                         }, 300);
                     }, 400);
                 }
-                progressText.innerText = `SYS.INIT // ${progress}%`;
+                progressText.innerText = `MATRIX.INIT // ${progress}%`;
                 progressFill.style.width = `${progress}%`;
             }, 40);
 
@@ -250,14 +253,10 @@
             let mouseY = window.innerHeight / 2;
             let trailX = mouseX;
             let trailY = mouseY;
-            
-            let mouse = { x: null, y: null, radius: 180 };
 
             window.addEventListener('mousemove', (event) => {
                 mouseX = event.clientX;
                 mouseY = event.clientY;
-                mouse.x = event.x;
-                mouse.y = event.y;
                 
                 cursor.style.left = mouseX + 'px';
                 cursor.style.top = mouseY + 'px';
@@ -265,43 +264,47 @@
                 mouseGlow.style.top = mouseY + 'px';
             });
 
-            window.addEventListener('mouseout', () => {
-                mouse.x = undefined;
-                mouse.y = undefined;
-            });
-
-            // ================= 3. Canvas 核心与波纹特效 =================
+            // ================= 3. 黑客帝国代码雨核心逻辑 =================
             const canvas = document.getElementById('matrixCanvas');
             const ctx = canvas.getContext('2d');
+            
+            let width = canvas.width = window.innerWidth;
+            let height = canvas.height = window.innerHeight;
 
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            // 包含拉丁字母、数字和半角日文片假名（经典的矩阵字符集）
+            const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*日ﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾘｱﾎﾃﾏｹﾒｴｶｷﾑﾕﾗｾﾈｽﾀﾇﾍ'.split('');
+            const fontSize = 14;
+            let columns = Math.floor(width / fontSize);
+            let drops = [];
+            
+            // 初始化每一列的坠落高度
+            for (let x = 0; x < columns; x++) {
+                drops[x] = Math.random() * -100; // 随机初始高度，错落有致
+            }
 
-            let particlesArray = [];
-            let ripplesArray = []; // 波纹数组
+            let ripplesArray = [];
 
-            // 点击事件：触发波纹与粒子炸开
+            // 点击事件：产生波纹 + 代码雨干扰重置
             window.addEventListener('mousedown', (e) => {
-                // 鼠标圆点收缩反馈
                 cursor.classList.add('clicked');
                 
-                // 1. 生成双重视觉波纹
-                ripplesArray.push({ x: e.clientX, y: e.clientY, radius: 0, alpha: 1, speed: 5, width: 2 });
+                // 1. 发射视觉波纹
+                ripplesArray.push({ x: e.clientX, y: e.clientY, radius: 0, alpha: 1, speed: 6, width: 2 });
                 setTimeout(() => {
-                    ripplesArray.push({ x: e.clientX, y: e.clientY, radius: 0, alpha: 0.6, speed: 3.5, width: 1 });
+                    ripplesArray.push({ x: e.clientX, y: e.clientY, radius: 0, alpha: 0.6, speed: 4, width: 1 });
                 }, 100);
 
-                // 2. 物理震荡：炸开周围的粒子
-                for (let i = 0; i < particlesArray.length; i++) {
-                    let p = particlesArray[i];
-                    let dx = p.x - e.clientX;
-                    let dy = p.y - e.clientY;
+                // 2. 物理干扰：点击区域内的代码流被瞬间推回上方（数据逆流）
+                for (let i = 0; i < drops.length; i++) {
+                    let dropX = i * fontSize;
+                    let dropY = drops[i] * fontSize;
+                    let dx = e.clientX - dropX;
+                    let dy = e.clientY - dropY;
                     let distance = Math.sqrt(dx * dx + dy * dy);
                     
-                    if (distance < 250) {
-                        let force = (250 - distance) / 250; // 越近受力越大
-                        p.x += (dx / distance) * force * 80; // 瞬间推开
-                        p.y += (dy / distance) * force * 80;
+                    if (distance < 200) {
+                        // 距离中心越近，被推回得越高
+                        drops[i] -= Math.floor((200 - distance) / 5); 
                     }
                 }
             });
@@ -310,94 +313,7 @@
                 cursor.classList.remove('clicked');
             });
 
-            class Particle {
-                constructor(x, y, directionX, directionY, size, color) {
-                    this.x = x;
-                    this.y = y;
-                    this.directionX = directionX;
-                    this.directionY = directionY;
-                    this.size = size;
-                    this.color = color;
-                    this.baseX = this.x;
-                    this.baseY = this.y;
-                    this.density = (Math.random() * 30) + 1; 
-                }
-                draw() {
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-                    ctx.fillStyle = this.color;
-                    ctx.fill();
-                }
-                update() {
-                    if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
-                    if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
-
-                    // 鼠标日常排斥互动
-                    let dx = mouse.x - this.x;
-                    let dy = mouse.y - this.y;
-                    let distance = Math.sqrt(dx * dx + dy * dy);
-                    let forceDirectionX = dx / distance;
-                    let forceDirectionY = dy / distance;
-                    let maxDistance = mouse.radius;
-                    let force = (maxDistance - distance) / maxDistance;
-                    let directionX = forceDirectionX * force * this.density;
-                    let directionY = forceDirectionY * force * this.density;
-
-                    if (distance < mouse.radius && mouse.x !== undefined) {
-                        this.x -= directionX;
-                        this.y -= directionY;
-                    } else {
-                        if (this.x !== this.baseX) {
-                            let dx = this.x - this.baseX;
-                            this.x -= dx / 20; // 弹回速度调慢，让震荡后的恢复更平滑
-                        }
-                        if (this.y !== this.baseY) {
-                            let dy = this.y - this.baseY;
-                            this.y -= dy / 20;
-                        }
-                    }
-
-                    this.x += this.directionX;
-                    this.y += this.directionY;
-                    this.draw();
-                }
-            }
-
-            function init() {
-                particlesArray = [];
-                let numberOfParticles = (canvas.height * canvas.width) / 2500;
-                for (let i = 0; i < numberOfParticles; i++) {
-                    let size = (Math.random() * 1.5) + 0.5; 
-                    let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
-                    let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
-                    let directionX = (Math.random() * 0.4) - 0.2; 
-                    let directionY = (Math.random() * 0.4) - 0.2;
-                    let color = 'rgba(0, 255, 204, 0.6)'; 
-
-                    particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
-                }
-            }
-
-            function connect() {
-                let opacityValue = 1;
-                for (let a = 0; a < particlesArray.length; a++) {
-                    for (let b = a; b < particlesArray.length; b++) {
-                        let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x))
-                                     + ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
-                        
-                        if (distance < (canvas.width / 15) * (canvas.height / 15)) {
-                            opacityValue = 1 - (distance / 8000);
-                            ctx.strokeStyle = `rgba(0, 255, 204, ${opacityValue * 0.25})`;
-                            ctx.lineWidth = 0.5;
-                            ctx.beginPath();
-                            ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
-                            ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
-                            ctx.stroke();
-                        }
-                    }
-                }
-            }
-
+            // 绘制数字波纹
             function drawRipples() {
                 for (let i = 0; i < ripplesArray.length; i++) {
                     let r = ripplesArray[i];
@@ -407,44 +323,91 @@
                     ctx.lineWidth = r.width;
                     ctx.stroke();
 
-                    r.radius += r.speed; // 波纹扩散速度
-                    r.alpha -= 0.015; // 波纹消散速度
+                    r.radius += r.speed; 
+                    r.alpha -= 0.012; // 波纹消散
                 }
-                // 清理已经透明的波纹
                 ripplesArray = ripplesArray.filter(r => r.alpha > 0);
             }
 
+            // 绘制代码雨
+            function drawMatrix() {
+                // 使用半透明黑色填充，保留上一帧的残影，形成拖尾效果
+                ctx.fillStyle = 'rgba(2, 2, 2, 0.08)';
+                ctx.fillRect(0, 0, width, height);
+
+                ctx.font = fontSize + 'px monospace';
+                ctx.textAlign = 'center';
+
+                for (let i = 0; i < drops.length; i++) {
+                    // 随机选择字符
+                    const text = letters[Math.floor(Math.random() * letters.length)];
+                    
+                    let dropX = i * fontSize;
+                    let dropY = drops[i] * fontSize;
+
+                    // 计算鼠标与当前字符的距离，实现探照灯交互
+                    let dx = mouseX - dropX;
+                    let dy = mouseY - dropY;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 80) {
+                        // 鼠标周围的字符高亮为白色，并略微抖动（黑客解码感）
+                        ctx.fillStyle = '#ffffff';
+                        dropX += (Math.random() - 0.5) * 2;
+                    } else if (Math.random() > 0.98) {
+                        // 极小概率随机闪烁成白色
+                        ctx.fillStyle = '#ffffff';
+                    } else {
+                        // 默认的赛博青绿色
+                        ctx.fillStyle = '#00ffcc';
+                    }
+
+                    // 绘制字符
+                    ctx.fillText(text, dropX + fontSize/2, dropY);
+
+                    // 触底或随机重置到顶部
+                    if (dropY > height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    
+                    // 下落速度控制
+                    drops[i] += 0.9;
+                }
+            }
+
+            // 动画主循环
             function animate() {
-                requestAnimationFrame(animate);
+                // 限制帧率以获得经典的电影代码雨速度感
+                setTimeout(() => {
+                    requestAnimationFrame(animate);
+                }, 30); // 调整此数值可改变下落整体速度 (毫秒)
                 
-                // 星空球弹性拖尾
-                trailX += (mouseX - trailX) * 0.15;
-                trailY += (mouseY - trailY) * 0.15;
+                // 星空球弹性拖尾更新
+                trailX += (mouseX - trailX) * 0.2;
+                trailY += (mouseY - trailY) * 0.2;
                 cursorTrail.style.left = trailX + 'px';
                 cursorTrail.style.top = trailY + 'px';
 
-                ctx.clearRect(0, 0, innerWidth, innerHeight);
-                
-                // 绘制粒子和连线
-                for (let i = 0; i < particlesArray.length; i++) {
-                    particlesArray[i].update();
-                }
-                connect();
-                
-                // 绘制波纹 (画在最上层)
+                // 核心渲染
+                drawMatrix();
                 drawRipples();
             }
 
+            // 窗口自适应
             window.addEventListener('resize', () => {
-                canvas.width = innerWidth;
-                canvas.height = innerHeight;
-                init();
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+                columns = Math.floor(width / fontSize);
+                // 补充新增列的数组长度
+                while(drops.length < columns) {
+                    drops.push(Math.random() * -100);
+                }
             });
 
-            init();
+            // 启动
             animate();
             
-            // UI 交互反馈
+            // UI 悬浮反馈保持不变
             document.querySelectorAll('.ui-element').forEach(el => {
                 el.addEventListener('mouseenter', () => {
                     cursorTrail.style.width = '50px';
