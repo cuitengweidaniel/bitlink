@@ -57,7 +57,6 @@
             filter: blur(0.4px); 
         }
 
-        /* 鼠标探照灯全局光晕 */
         #mouse-glow {
             position: absolute;
             width: 400px; height: 400px;
@@ -85,7 +84,6 @@
             transform: translate(-50%, -50%) scale(0.4);
         }
 
-        /* 水波纹拖尾 */
         #cursor-trail {
             position: fixed;
             top: 0; left: 0;
@@ -127,6 +125,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
         }
 
         /* AI 思考圈动画 */
@@ -158,7 +157,53 @@
             50% { opacity: 0; }
         }
 
-        /* CRT 故障闪烁特效 */
+        /* ================= 电视信号干扰特效 (TV Signal Glitch) ================= */
+        .tv-signal {
+            animation: analog-tv-signal 7s infinite alternate;
+        }
+
+        @keyframes analog-tv-signal {
+            0%, 15%, 35%, 65%, 85%, 100% { 
+                opacity: 1; 
+                filter: blur(0); 
+                text-shadow: 0 0 20px rgba(0, 255, 204, 0.3); 
+                transform: translate(0) skewX(0);
+            }
+            18% { 
+                opacity: 0.6; 
+                filter: blur(0.5px); 
+            }
+            20% { 
+                opacity: 0.2; 
+                filter: blur(1.5px); 
+                transform: translateX(-2px) skewX(-2deg);
+                /* 模拟 RGB 色差分离 */
+                text-shadow: 3px 0 0 rgba(255, 0, 85, 0.6), -3px 0 0 rgba(0, 255, 255, 0.6);
+            }
+            22% { 
+                opacity: 0.9; 
+                filter: blur(0); 
+                transform: translate(0);
+            }
+            68% { 
+                opacity: 0.4; 
+                filter: blur(1px); 
+                text-shadow: -2px 0 0 rgba(0, 255, 0, 0.5), 2px 0 0 rgba(255, 0, 255, 0.5);
+            }
+            70% { 
+                opacity: 0.8; 
+                transform: translateX(2px) skewX(3deg);
+            }
+            72% { 
+                transform: translateX(0) skewX(0);
+            }
+            88% { 
+                opacity: 0.5; 
+                filter: blur(0.8px);
+            }
+        }
+
+        /* 副标题轻微故障闪烁 */
         .subtitle {
             font-family: monospace;
             font-size: 13px;
@@ -241,7 +286,7 @@
     <div class="center-content" id="main-content">
         <h1>
             <div id="thinking-spinner"></div>
-            <span id="ai-text" style="text-transform: none;"></span>
+            <span id="ai-text" style="text-transform: none; display: inline-block;"></span>
             <span id="ai-cursor">█</span>
         </h1>
         <div class="subtitle">Software Engineer | System Architect</div>
@@ -267,12 +312,10 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // 包含拉丁字母、数字和半角日文片假名的矩阵字符集
             const matrixCharsSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*日ﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾘｱﾎﾃﾏｹﾒｴｶｷﾑﾕﾗｾﾈｽﾀﾇﾍ';
             
             // ================= 1. AI 多级思考打字推演序列 =================
             function startAITyping() {
-                // 定义推演序列：思考的四个阶段
                 const thoughtSequence = ["allen", "cuitengwei", "tengwei", "tengwei.me"];
                 let step = 0;
                 
@@ -280,7 +323,6 @@
                 const textContainer = document.getElementById('ai-text');
                 const cursorBlock = document.getElementById('ai-cursor');
                 
-                // 展示思考圈
                 spinner.style.display = 'block';
                 textContainer.innerText = '';
                 
@@ -288,7 +330,6 @@
                     spinner.style.display = 'none'; 
                     cursorBlock.style.display = 'inline-block'; 
                     
-                    // 递归执行推演步骤
                     function processStep() {
                         if (step >= thoughtSequence.length) return; 
                         
@@ -296,7 +337,6 @@
                         const isLast = (step === thoughtSequence.length - 1);
                         let charIndex = 0;
                         
-                        // 打字推演
                         function typeChar() {
                             if (charIndex < currentText.length) {
                                 textContainer.innerText += currentText.charAt(charIndex);
@@ -304,13 +344,17 @@
                                 setTimeout(typeChar, Math.random() * 150 + 80);
                             } else {
                                 if (!isLast) {
-                                    // 停顿思考后推翻重来
                                     setTimeout(deleteChar, Math.random() * 600 + 600);
+                                } else {
+                                    // 重点：当最后一句 tengwei.me 打完后，停顿 1.5 秒
+                                    // 然后为其挂载电视信号干扰的 CSS 动画
+                                    setTimeout(() => {
+                                        textContainer.classList.add('tv-signal');
+                                    }, 1500);
                                 }
                             }
                         }
                         
-                        // 快速回删否定
                         function deleteChar() {
                             if (textContainer.innerText.length > 0) {
                                 textContainer.innerText = textContainer.innerText.slice(0, -1);
@@ -326,7 +370,7 @@
 
                     processStep(); 
 
-                }, 1500); // 初始思考光圈持续时间
+                }, 1500); 
             }
 
             // ================= 2. 模拟系统加载器 =================
@@ -345,7 +389,6 @@
                         loader.style.opacity = '0';
                         setTimeout(() => {
                             mainContent.classList.add('loaded');
-                            // 触发 AI 推演序列
                             startAITyping();
                             setTimeout(() => { loader.remove(); }, 1000);
                         }, 300);
@@ -378,7 +421,6 @@
                 mouseGlow.style.left = mouseX + 'px';
                 mouseGlow.style.top = mouseY + 'px';
 
-                // 生成随动涟漪
                 let dist = Math.hypot(mouseX - lastRippleX, mouseY - lastRippleY);
                 if (dist > 35) { 
                     ripplesArray.push({
@@ -405,7 +447,6 @@
                 drops[x] = Math.random() * -100; 
             }
 
-            // 点击产生强力雷达波与代码逆流
             window.addEventListener('mousedown', (e) => {
                 cursor.classList.add('clicked');
                 
@@ -431,7 +472,6 @@
                 cursor.classList.remove('clicked');
             });
 
-            // 绘制数字波纹
             function drawRipples() {
                 for (let i = 0; i < ripplesArray.length; i++) {
                     let r = ripplesArray[i];
@@ -446,7 +486,6 @@
                 ripplesArray = ripplesArray.filter(r => r.alpha > 0);
             }
 
-            // 绘制下落代码雨
             function drawMatrix() {
                 ctx.fillStyle = 'rgba(2, 2, 2, 0.08)';
                 ctx.fillRect(0, 0, width, height);
@@ -462,7 +501,6 @@
                     let dy = mouseY - dropY;
                     let distance = Math.sqrt(dx * dx + dy * dy);
 
-                    // 探照灯解码交互
                     if (distance < 80) {
                         ctx.fillStyle = '#ffffff';
                         dropX += (Math.random() - 0.5) * 2; 
@@ -481,11 +519,9 @@
                 }
             }
 
-            // 主动画循环
             function animate() {
                 setTimeout(() => { requestAnimationFrame(animate); }, 30); 
                 
-                // 弹性延迟算法插值
                 trailX += (mouseX - trailX) * 0.2;
                 trailY += (mouseY - trailY) * 0.2;
                 cursorTrail.style.left = trailX + 'px';
@@ -495,7 +531,6 @@
                 drawRipples(); 
             }
 
-            // 窗口尺寸自适应
             window.addEventListener('resize', () => {
                 width = canvas.width = window.innerWidth;
                 height = canvas.height = window.innerHeight;
@@ -505,7 +540,6 @@
 
             animate();
             
-            // UI 元素悬浮交互
             document.querySelectorAll('.ui-element').forEach(el => {
                 el.addEventListener('mouseenter', () => {
                     cursorTrail.style.width = '50px';
