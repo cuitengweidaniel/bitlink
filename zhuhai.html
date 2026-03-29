@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>珠海六日三代同游交互规划</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 250px;
+            max-height: 400px;
+        }
+        @media (min-width: 640px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        @media (min-width: 1024px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        
+        /* 胶囊糖果风格的标签页 */
+        .tab-btn {
+            border-radius: 9999px; /* full rounded */
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .tab-active {
+            background-color: #0ea5e9; /* sky-500 */
+            color: #ffffff !important;
+            box-shadow: 0 4px 14px 0 rgba(14, 165, 233, 0.39);
+            font-weight: 700;
+        }
+        .tab-inactive:hover {
+            background-color: #e0f2fe; /* sky-100 */
+            color: #0284c7; /* sky-700 */
+        }
+        
+        /* 侧边栏书签风格 */
+        .day-btn {
+            border-top-right-radius: 1.5rem;
+            border-bottom-right-radius: 1.5rem;
+            margin-right: 1rem;
+            transition: all 0.2s ease-in-out;
+            border-left: 4px solid transparent;
+        }
+        .day-active {
+            background-color: #e0f2fe;
+            border-left-color: #0ea5e9;
+            box-shadow: 0 2px 10px rgba(14, 165, 233, 0.1);
+            transform: translateX(4px);
+        }
+
+        body {
+            /* 柔和海岛度假风渐变背景 */
+            background-image: linear-gradient(to bottom right, #f0f9ff, #ffffff, #fffbeb);
+            color: #334155;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-attachment: fixed;
+        }
+        
+        /* 圆润可爱的滚动条 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(241, 245, 249, 0.5); 
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+
+        /* 卡片悬浮动画增强 */
+        .hover-bounce {
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+        }
+        .hover-bounce:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen">
+
+    <!-- Chosen Palette: Joyful Coastal (Soft Sky Blue, Warm Sand, Playful Pink & Sunny Amber accents) -->
+    <!-- Application Structure Plan: The SPA retains its highly functional master-detail dashboard layout but the styling is entirely revamped to evoke a joyful, stress-free family vacation. Hard edges are replaced with large border radii, tabs are turned into playful pill buttons, and structural cards use soft, colored shadows with bounce-on-hover effects. The flow remains identical (Roles -> Prep -> Itinerary) but feels less like a corporate report and more like an interactive scrapbook. -->
+    <!-- Visualization & Content Choices: Content exactly matches previous iteration. Visualizations use the same functional libraries (Chart.js) but the CSS wrappers are styled with "Joyful Coastal" tokens. Master-detail sidebar buttons are styled to look like protruding page bookmarks. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <div class="max-w-6xl mx-auto px-4 py-6 md:py-10">
+        
+        <header class="mb-10 md:mb-14 text-center relative z-10">
+            <div class="inline-block bg-white/60 backdrop-blur-sm px-5 py-5 md:px-8 md:py-6 rounded-3xl shadow-sm border border-white mx-2 md:mx-0">
+                <h1 class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-teal-400 mb-3 md:mb-4 drop-shadow-sm leading-tight">
+                    <span class="text-sky-500 drop-shadow-none">🌊</span> 珠海六日三代同游活规划
+                </h1>
+                <p class="text-base md:text-lg text-slate-600 max-w-3xl mx-auto font-medium">一份专为张路平（妈妈）、崔腾伟（爸爸）及长辈、两名儿童设计的交互式出行指南。点击下方模块，开启轻松愉悦的家庭之旅！</p>
+            </div>
+        </header>
+
+        <!-- 角色分配区块 -->
+        <section class="mb-12 md:mb-16 relative">
+            <div class="mb-6 md:mb-8 text-center md:text-left">
+                <h2 class="inline-block text-xl md:text-2xl font-extrabold text-slate-800 bg-amber-100 px-4 py-2 rounded-2xl shadow-sm">
+                    🧑‍🤝‍🧑 核心战术：分组与角色分配
+                </h2>
+                <p class="text-slate-500 mt-2 md:mt-3 md:ml-2 text-sm md:text-base font-medium">“2+2+2”分组模式，分工明确，游玩不累。</p>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                <!-- 妈妈 -->
+                <div class="bg-white rounded-3xl shadow-sm p-5 md:p-6 border-t-8 border-pink-400 hover-bounce relative overflow-hidden">
+                    <div class="absolute -right-4 -top-4 w-20 h-20 bg-pink-50 rounded-full z-0"></div>
+                    <div class="relative z-10">
+                        <div class="text-5xl mb-4 drop-shadow-sm">👩</div>
+                        <h3 class="text-xl font-bold text-pink-600">妈妈 (张路平)</h3>
+                        <div class="inline-block bg-pink-100 text-pink-700 text-xs font-bold px-2 py-1 rounded-md mb-3 mt-1">总指挥 / 后勤</div>
+                        <ul class="text-sm text-slate-600 space-y-2">
+                            <li class="flex items-start"><span class="text-pink-400 mr-2">✦</span>统筹指挥、财务与票务</li>
+                            <li class="flex items-start"><span class="text-pink-400 mr-2">✦</span>安抚妹妹，推推车</li>
+                            <li class="flex items-start bg-pink-50/50 p-2 rounded-lg mt-2"><span class="font-bold text-pink-700 mr-1">随身：</span>身份证件、手机、纸巾</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- 爸爸 -->
+                <div class="bg-white rounded-3xl shadow-sm p-6 border-t-8 border-sky-400 hover-bounce relative overflow-hidden">
+                    <div class="absolute -right-4 -top-4 w-20 h-20 bg-sky-50 rounded-full z-0"></div>
+                    <div class="relative z-10">
+                        <div class="text-5xl mb-4 drop-shadow-sm">👨</div>
+                        <h3 class="text-xl font-bold text-sky-600">爸爸 (崔腾伟)</h3>
+                        <div class="inline-block bg-sky-100 text-sky-700 text-xs font-bold px-2 py-1 rounded-md mb-3 mt-1">体力担当 / 先锋</div>
+                        <ul class="text-sm text-slate-600 space-y-2">
+                            <li class="flex items-start"><span class="text-sky-400 mr-2">✦</span>路线导航、打车、找路</li>
+                            <li class="flex items-start"><span class="text-sky-400 mr-2">✦</span>带飞哥哥冲锋玩项目</li>
+                            <li class="flex items-start bg-sky-50/50 p-2 rounded-lg mt-2"><span class="font-bold text-sky-700 mr-1">随身：</span>备用衣服、水壶防晒、充电宝</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 爷爷 -->
+                <div class="bg-white rounded-3xl shadow-sm p-6 border-t-8 border-amber-400 hover-bounce relative overflow-hidden">
+                    <div class="absolute -right-4 -top-4 w-20 h-20 bg-amber-50 rounded-full z-0"></div>
+                    <div class="relative z-10">
+                        <div class="text-5xl mb-4 drop-shadow-sm">👴</div>
+                        <h3 class="text-xl font-bold text-amber-600">爷爷 (肖连元)</h3>
+                        <div class="inline-block bg-amber-100 text-amber-700 text-xs font-bold px-2 py-1 rounded-md mb-3 mt-1">外围警戒 / 辅助</div>
+                        <ul class="text-sm text-slate-600 space-y-2">
+                            <li class="flex items-start"><span class="text-amber-400 mr-2">✦</span>看管休息时推车和外套</li>
+                            <li class="flex items-start"><span class="text-amber-400 mr-2">✦</span>辅助拿轻便物品</li>
+                            <li class="flex items-start bg-amber-50/50 p-2 rounded-lg mt-2"><span class="font-bold text-amber-700 mr-1">随身：</span>保温杯、常备药品</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 奶奶 -->
+                <div class="bg-white rounded-3xl shadow-sm p-5 md:p-6 border-t-8 border-orange-400 hover-bounce relative overflow-hidden">
+                    <div class="absolute -right-4 -top-4 w-20 h-20 bg-orange-50 rounded-full z-0"></div>
+                    <div class="relative z-10">
+                        <div class="text-5xl mb-4 drop-shadow-sm">👵</div>
+                        <h3 class="text-xl font-bold text-orange-500">奶奶 (崔兴花)</h3>
+                        <div class="inline-block bg-orange-100 text-orange-700 text-xs font-bold px-2 py-1 rounded-md mb-3 mt-1">后勤辅助 / 替补</div>
+                        <ul class="text-sm text-slate-600 space-y-2">
+                            <li class="flex items-start"><span class="text-orange-400 mr-2">✦</span>短暂照看兄妹俩</li>
+                            <li class="flex items-start"><span class="text-orange-400 mr-2">✦</span>休息时陪玩</li>
+                            <li class="flex items-start bg-orange-50/50 p-2 rounded-lg mt-2"><span class="font-bold text-orange-700 mr-1">随身：</span>保温杯、药品、哄娃零食</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-6 md:mt-8 bg-gradient-to-r from-cyan-100 to-sky-50 rounded-2xl p-4 md:p-5 flex flex-col sm:flex-row items-center shadow-sm border border-white text-center sm:text-left">
+                <div class="bg-white p-3 rounded-xl shadow-sm sm:mr-5 mb-3 sm:mb-0 text-3xl">👶👦</div>
+                <div>
+                    <h4 class="font-bold text-sky-900 text-base md:text-lg">重点保护对象：以诺 (5岁) & 以琳 (3岁)</h4>
+                    <p class="text-xs md:text-sm text-sky-700 mt-1 font-medium">需要时刻关注出汗情况，及时垫隔汗巾。妹妹全天需要轻便推车。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 行前准备区块 -->
+        <section class="mb-12 md:mb-16">
+            <div class="mb-6 md:mb-8 text-center md:text-left">
+                <h2 class="inline-block text-xl md:text-2xl font-extrabold text-slate-800 bg-sky-100 px-4 py-2 rounded-2xl shadow-sm">
+                    🎒 “衣食住行”行前精准准备
+                </h2>
+                <p class="text-slate-500 mt-2 md:mt-3 md:ml-2 text-sm md:text-base font-medium">点击可爱的糖果标签，查看具体准备清单。</p>
+            </div>
+
+            <div class="bg-white/80 backdrop-blur-md rounded-3xl shadow-sm border border-white overflow-hidden p-2">
+                <!-- 糖果形 Tabs -->
+                <div class="flex flex-col sm:flex-row gap-2 p-2 bg-slate-50 rounded-2xl mb-2 md:mb-4">
+                    <button class="tab-btn tab-active flex-1 py-3 px-4 text-center text-sm md:text-base text-slate-600 font-semibold" data-target="prep-clothes">👕 穿衣指南</button>
+                    <button class="tab-btn tab-inactive flex-1 py-3 px-4 text-center text-sm md:text-base text-slate-600 font-semibold" data-target="prep-food">🍲 饮食与药品</button>
+                    <button class="tab-btn tab-inactive flex-1 py-3 px-4 text-center text-sm md:text-base text-slate-600 font-semibold" data-target="prep-transport">🚗 交通与住宿</button>
+                </div>
+                
+                <div class="px-4 pb-4 md:px-6 md:pb-6 pt-2">
+                    <div id="prep-clothes" class="tab-content block animate-fade-in">
+                        <h3 class="text-base md:text-lg font-bold text-slate-800 mb-3 md:mb-4 flex items-center"><span class="bg-sky-100 text-sky-600 p-1.5 rounded-lg mr-2">🌡️</span> 应对 23-25℃、90%高湿度</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+                            <div class="bg-amber-50/50 border border-amber-100 p-4 md:p-5 rounded-2xl hover-bounce">
+                                <h4 class="font-bold text-amber-700 mb-2 md:mb-3 text-base md:text-lg border-b border-amber-200 pb-2">👴👵 长辈</h4>
+                                <ul class="list-none text-sm text-slate-700 space-y-2">
+                                    <li class="flex items-center"><span class="text-amber-400 mr-2 text-lg">•</span> 透气长袖T恤</li>
+                                    <li class="flex items-center"><span class="text-amber-400 mr-2 text-lg">•</span> 薄款防风外套 / 薄抓绒衣</li>
+                                    <li class="flex items-center"><span class="text-amber-400 mr-2 text-lg">•</span> 鞋底软且防滑的老健步鞋</li>
+                                </ul>
+                            </div>
+                            <div class="bg-sky-50/50 border border-sky-100 p-4 md:p-5 rounded-2xl hover-bounce">
+                                <h4 class="font-bold text-sky-700 mb-2 md:mb-3 text-base md:text-lg border-b border-sky-200 pb-2">👨👩 父母</h4>
+                                <ul class="list-none text-sm text-slate-700 space-y-2">
+                                    <li class="flex items-center"><span class="text-sky-400 mr-2 text-lg">•</span> 纯棉/速干短袖</li>
+                                    <li class="flex items-center"><span class="text-sky-400 mr-2 text-lg">•</span> 轻薄防晒衣</li>
+                                    <li class="flex items-center"><span class="text-sky-400 mr-2 text-lg">•</span> 最舒适运动鞋(日均1.5万步)</li>
+                                </ul>
+                            </div>
+                            <div class="bg-pink-50/50 border border-pink-100 p-4 md:p-5 rounded-2xl hover-bounce">
+                                <h4 class="font-bold text-pink-600 mb-2 md:mb-3 text-base md:text-lg border-b border-pink-200 pb-2">👶👦 孩子们</h4>
+                                <ul class="list-none text-sm text-slate-700 space-y-2">
+                                    <li class="flex items-center"><span class="text-pink-400 mr-2 text-lg">•</span> 排汗内衣及吸汗巾</li>
+                                    <li class="flex items-center"><span class="text-pink-400 mr-2 text-lg">•</span> 每天2套备用衣裤</li>
+                                    <li class="flex items-center"><span class="text-pink-400 mr-2 text-lg">•</span> 去沙滩的洞洞鞋/凉鞋</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="prep-food" class="tab-content hidden animate-fade-in">
+                        <h3 class="text-base md:text-lg font-bold text-slate-800 mb-3 md:mb-4 flex items-center"><span class="bg-emerald-100 text-emerald-600 p-1.5 rounded-lg mr-2">🌿</span> 兼顾老人软烂与儿童肠胃</h3>
+                        <div class="bg-emerald-50/30 rounded-2xl p-4 md:p-5 border border-emerald-100">
+                            <ul class="space-y-3 md:space-y-4 text-sm md:text-base text-slate-700">
+                                <li class="flex items-start bg-white p-3 rounded-xl shadow-sm"><span class="text-lg md:text-xl mr-2 md:mr-3">🫙</span> <div><strong>必备神器：</strong>大容量保温杯（至少2个）。</div></li>
+                                <li class="flex items-start bg-white p-3 rounded-xl shadow-sm"><span class="text-lg md:text-xl mr-2 md:mr-3">⚠️</span> <div><strong>饮食避坑：</strong>珠海海鲜多，老人和孩子绝对不能吃生冷海鲜。点餐时叮嘱餐厅：少盐、免辣、部分菜品要软烂。</div></li>
+                                <li class="flex items-start bg-white p-3 rounded-xl shadow-sm"><span class="text-lg md:text-xl mr-2 md:mr-3">🍪</span> <div><strong>应急口粮：</strong>随身带小包装饼干、海苔、溶豆。</div></li>
+                                <li class="flex items-start bg-white p-3 rounded-xl shadow-sm"><span class="text-lg md:text-xl mr-2 md:mr-3">💊</span> <div><strong>必备药品：</strong>第五天海岛游，早上8点必须给老人孩子贴好耳后晕船贴。</div></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div id="prep-transport" class="tab-content hidden animate-fade-in">
+                        <h3 class="text-base md:text-lg font-bold text-slate-800 mb-3 md:mb-4 flex items-center"><span class="bg-indigo-100 text-indigo-600 p-1.5 rounded-lg mr-2">🧭</span> 出行与交通痛点解决</h3>
+                        <div class="bg-rose-50 text-rose-800 p-4 md:p-5 rounded-2xl border border-rose-200 mb-4 md:mb-5 shadow-sm">
+                            <strong class="text-base md:text-lg block mb-1">🚨 强烈建议全程打车/预约7座商务车，绝不建议自驾游珠海！</strong> 
+                            <span class="text-xs md:text-sm">景区停车极难且费时，带着老人小孩找车位极其痛苦。</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+                            <div class="bg-white p-3 md:p-4 rounded-xl border border-indigo-100 shadow-sm flex items-start">
+                                <span class="text-xl md:text-2xl mr-3 bg-indigo-50 rounded-lg p-2">🅿️</span> 
+                                <div>
+                                    <strong class="text-indigo-900 block mb-1">大厂往返大兴</strong>
+                                    <span class="text-xs md:text-sm text-slate-600">务必提前在大兴机场小程序预订长时停车位（P1/P2停车楼）。</span>
+                                </div>
+                            </div>
+                            <div class="bg-white p-3 md:p-4 rounded-xl border border-indigo-100 shadow-sm flex items-start">
+                                <span class="text-xl md:text-2xl mr-3 bg-indigo-50 rounded-lg p-2">🛒</span> 
+                                <div>
+                                    <strong class="text-indigo-900 block mb-1">儿童推车</strong>
+                                    <span class="text-xs md:text-sm text-slate-600">强烈建议带一辆折叠轻便推车给妹妹坐。长隆极其费体力。</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 气温趋势区块 -->
+        <section class="mb-12 md:mb-16">
+            <div class="mb-6 md:mb-8 text-center md:text-left">
+                <h2 class="inline-block text-xl md:text-2xl font-extrabold text-slate-800 bg-orange-100 px-4 py-2 rounded-2xl shadow-sm">
+                    📈 气温趋势与应对
+                </h2>
+            </div>
+            <div class="bg-white rounded-3xl shadow-sm border border-white p-4 sm:p-6 md:p-8">
+                <div class="chart-container">
+                    <canvas id="weatherChart"></canvas>
+                </div>
+                <div class="mt-4 md:mt-6 bg-slate-50 rounded-xl p-3 md:p-4 text-center">
+                    <p class="text-xs md:text-sm font-medium text-slate-600">💡 <strong class="text-slate-800">温馨提示：</strong>由于珠海相对湿度高达90%，24℃体感会偏闷热；<span class="text-rose-500 font-bold block sm:inline mt-1 sm:mt-0">最后一天落地北京时温差极大，需立刻套上厚冬装！</span></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 每日活规划大图景 -->
+        <section class="mb-12 md:mb-16">
+            <div class="mb-6 md:mb-8 text-center md:text-left">
+                <h2 class="inline-block text-xl md:text-2xl font-extrabold text-slate-800 bg-teal-100 px-4 py-2 rounded-2xl shadow-sm">
+                    📅 每日“活规划”与打卡仪表盘
+                </h2>
+                <p class="text-slate-500 mt-2 md:mt-3 md:ml-2 text-sm md:text-base font-medium">随时随地掌控全家节奏，点击书签切换日期。</p>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-4 md:gap-6 bg-white/60 backdrop-blur-md rounded-3xl shadow-sm border border-white overflow-hidden min-h-[600px]">
+                
+                <!-- 书签侧边栏 -->
+                <div class="w-full lg:w-1/4 bg-slate-50/50 py-4 md:py-6 border-b lg:border-b-0 lg:border-r border-slate-200" id="day-selector-container">
+                    <!-- JS 生成按钮 -->
+                </div>
+
+                <!-- 详情展示区 -->
+                <div class="w-full lg:w-3/4 p-4 sm:p-6 lg:p-10 bg-white" id="day-content-display">
+                    <!-- JS 生成内容 -->
+                </div>
+
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        const appState = {
+            currentTab: 'prep-clothes',
+            currentDay: 1
+        };
+
+        // 数据对象保持不变
+        const itineraryData = [
+            {
+                id: 1,
+                date: "3月30日",
+                title: "大厂自驾出发，平稳过渡",
+                weather: {
+                    temp: "24℃ / 22℃ 湿度大，体感闷热",
+                    icon: "⛅",
+                    clothing: "【户外穿衣】建议全家穿着透气的速干短袖或薄款春装；【室内穿衣】机场、机舱及酒店大堂冷气较足，务必给老人和小孩随身带一件长袖薄外套防风。"
+                },
+                highlights: [
+                    { 
+                        name: "凌晨自驾与优先安检", 
+                        desc: "04:15 行李装车自驾出发，抵达大兴机场后，妈妈带老人走“爱心通道”，爸爸去停车楼停车。", 
+                        kidsTip: "🚶 步行距离：极少（几百米）。 | 🛒 推车建议：强烈需要。孩子凌晨易困，大兴机场面积大，推车可直接推到登机口机舱门前再托运。",
+                        highlight: "保证全家人不用在冷风中等车，爱心通道极大节省了老人和孩子的排队体力。" 
+                    },
+                    { 
+                        name: "南下飞行与气候适应", 
+                        desc: "09:00 - 12:15 飞行。落地后直接在机场洗手间给全家换轻薄春装，随后乘坐专车前往伴园山海居办理入住。", 
+                        kidsTip: "🚶 步行距离：较少。 | 🛒 推车建议：下飞机取行李后立即展开使用，推行至网约车上车点，减轻家长抱娃负担。",
+                        highlight: "完成从北方干冷到南方湿热的无缝切换，下午在酒店充分休息，为明天的长隆蓄锐。" 
+                    }
+                ],
+                transfers: "大厂 🚗 大兴机场 ✈️ 珠海金湾 🚗 伴园山海居",
+                food: [
+                    { name: "兰姐农庄", tag: "特色地道", tagColor: "amber", desc: "主打粤式海鲜炒菜与海鲜砂锅粥。砂锅粥极其暖胃，非常适合刚落地的老人和3岁妹妹。注意晚间有蚊虫。" },
+                    { name: "伴园山海居内餐厅/中餐厅", tag: "环境舒适", tagColor: "emerald", desc: "如果全家奔波一天实在疲惫不想出门，直接在酒店内点餐，环境优雅安静，吃完直接上楼休息。" },
+                    { name: "酒店周边简餐", tag: "距离最近", tagColor: "blue", desc: "由爸爸出门打包或直接叫外卖，主打一个快速填饱肚子，适合老人孩子实在困乏不想动弹的情况。" }
+                ]
+            },
+            {
+                id: 2,
+                date: "3月31日",
+                title: "长隆海洋王国（高消耗日）",
+                weather: {
+                    temp: "23℃ / 25℃ 紫外线强，夜间海风",
+                    icon: "☀️",
+                    clothing: "【户外穿衣】纯棉/速干短袖+强效防晒霜+遮阳帽；【景点特例】⚠️企鹅馆内极度寒冷（常年冰点），入馆前必须给老人和小孩穿上厚外套或薄羽绒服！"
+                },
+                highlights: [
+                    { 
+                        name: "巨型海洋展馆探索", 
+                        desc: "妈妈推车带着长辈和妹妹慢游鲸鲨馆、白鲸馆，爸爸带哥哥去刷冰山过山车、极地转转杯等微刺激项目。", 
+                        kidsTip: "🚶 步行距离：极多（全天超3-5公里）。 | 🛒 推车建议：🌟绝对必须！园区极其庞大，妹妹必须全程坐车，哥哥走累了甚至可以站/坐在推车踏板上。",
+                        highlight: "鲸鲨馆的巨型玻璃视窗极其震撼，是拍全家福的绝佳背景；分头行动兼顾了哥哥的精力和妹妹的体力。" 
+                    },
+                    { 
+                        name: "室内剧场与花车巡游", 
+                        desc: "下午1点最热时，躲进白鲸剧场或海豚剧场看演出。随后在阴凉处观看园区大型花车巡游。", 
+                        kidsTip: "🚶 步行距离：中等。 | 🛒 推车建议：需停放。进入剧场必须将推车停在场馆外专属停放区（请随身带走贵重物品）。",
+                        highlight: "剧场内有充足冷气和座位，是长辈最好的“充电”时刻，妹妹也可以在推车里睡个午觉。" 
+                    },
+                    { 
+                        name: "海洋保卫战烟花秀", 
+                        desc: "20:00 在鲸鲨馆门前广场观看压轴烟花秀。", 
+                        kidsTip: "🚶 步行距离：较少（原地站立等待）。 | 🛒 推车建议：强烈建议。人群拥挤，推车可以作为妹妹的专属“观景座”和防挤避风港。",
+                        highlight: "融合了无人机、水上飞人和璀璨烟花的顶级视觉盛宴，震撼全场。" 
+                    }
+                ],
+                transfers: "伴园山海居 🚗 长隆海洋王国 🚶 马戏酒店",
+                food: [
+                    { name: "马戏酒店美食小镇", tag: "距离最近", tagColor: "blue", desc: "看完烟花出园直达！类似大型大食代，有面条、馄饨、炒饭等，口味清淡，丰俭由人，解决晚餐最完美的地方。" },
+                    { name: "海底餐厅 (园区内)", tag: "环境最佳", tagColor: "emerald", desc: "紧邻鲸鲨馆巨大的水族箱，可以边看鲸鲨游动边吃午餐。价格偏贵，但体验感拉满，适合给孩子惊喜。" },
+                    { name: "雨林餐厅 (园区内)", tag: "快捷饱腹", tagColor: "amber", desc: "园区内的大型快餐厅，提供广式烧腊、鸡腿饭等，上菜快，适合中午迅速补充体力后继续游玩。" }
+                ]
+            },
+            {
+                id: 3,
+                date: "4月1日",
+                title: "长隆飞船乐园（室内恒温）",
+                weather: {
+                    temp: "室外24℃阵雨，全天室内恒温23℃",
+                    icon: "🌧️",
+                    clothing: "【室内穿衣】全天在恒温23℃的空调房内。孩子跑动极易出汗，务必穿透气吸汗的棉质内衣，外搭一件方便穿脱的薄长袖。出汗立刻垫汗巾，切忌冷风直吹！"
+                },
+                highlights: [
+                    { 
+                        name: "宇宙世界与亚细亚星球", 
+                        desc: "10:00入园，欣赏超炫酷的宇宙飞船内部设计与各式珍稀海洋、淡水生物。", 
+                        kidsTip: "🚶 步行距离：较多（约2-3公里）。 | 🛒 推车建议：强烈建议。全室内平层，推行极度丝滑，且非常方便挂放长辈脱下来的外套。",
+                        highlight: "恒温室内无惧风雨和日晒，对老人小孩极其友好，步道平缓舒适。" 
+                    },
+                    { 
+                        name: "沉浸式5D体验", 
+                        desc: "全家（老人若不晕3D）体验“百慕大历险”动感影院，妹妹可以去体验“深海潜艇”。", 
+                        kidsTip: "🚶 步行距离：极少。 | 🛒 推车建议：需寄存停放。排队及游玩期间推车需停在项目入口处。",
+                        highlight: "百慕大历险的5D海浪风暴特效极其逼真，是飞船乐园最受好评的隐藏神级项目。" 
+                    },
+                    { 
+                        name: "探索大学堂", 
+                        desc: "观看虎鲸科普展示，了解这种海洋霸主的生态习性。", 
+                        kidsTip: "🚶 步行距离：较少。 | 🛒 推车建议：需停放。阶梯式座位，推车需统一停放于场馆外。",
+                        highlight: "寓教于乐，规模宏大，是孩子们拓展海洋知识的好机会。" 
+                    }
+                ],
+                transfers: "马戏酒店 🚶 飞船乐园 🚗 棕泉酒店",
+                food: [
+                    { name: "盈客园特色煲仔翅", tag: "特色养生", tagColor: "amber", desc: "晚间抵达市区后的绝佳选择。浓汤煲仔翅富含胶原蛋白，拌饭极其香滑，极易消化，对老人长辈和小孩极其友好。" },
+                    { name: "飞船乐园二楼美食广场", tag: "距离最近", tagColor: "blue", desc: "午餐不出园直接在二楼解决。提供各类热汤面、中式快餐，空间大，带推车就餐方便。" },
+                    { name: "棕泉酒店周边茶餐厅", tag: "环境地道", tagColor: "emerald", desc: "若晚上不想吃大餐，酒店附近步行几百米就有地道的港式茶餐厅，菠萝油、滑蛋虾仁饭深受小朋友喜爱。" }
+                ]
+            },
+            {
+                id: 4,
+                date: "4月2日",
+                title: "情侣路浪漫游",
+                weather: {
+                    temp: "24℃ 晴间多云，紫外线强(UV 6-7)",
+                    icon: "☀️",
+                    clothing: "【户外穿衣】务必全副武装防晒：防晒服、墨镜、宽檐遮阳帽；【沙滩特例】下午去香炉湾挖沙，需换上不怕水的洞洞鞋，并在包里带上干净的备用衣服和毛巾。"
+                },
+                highlights: [
+                    { 
+                        name: "情侣路家庭骑行", 
+                        desc: "打车至爱情邮局，租借带遮阳棚的多人家庭自行车，沿着海岸线向城市阳台骑行。", 
+                        kidsTip: "🚶 步行距离：极少（全家骑车为主）。 | 🛒 推车建议：不需要。推车可折叠收纳在家庭自行车上，或寄存在租车点。",
+                        highlight: "吹着海风欣赏珠海渔女等地标。家庭自行车让全家人在一起，爷爷和爸爸蹬车，老人小孩坐中间毫不费力。" 
+                    },
+                    { 
+                        name: "香炉湾沙滩亲子挖沙", 
+                        desc: "下午在香炉湾沙滩停留，给长辈在旁边的阴凉处找个位置，爸爸妈妈陪孩子挖沙踩浪花。", 
+                        kidsTip: "🚶 步行距离：中等（沙滩内部）。 | 🛒 推车建议：不适用。沙地推车极其费力，建议将折叠推车放在长辈休息的咖啡厅或阴凉处。",
+                        highlight: "满足孩子们对海边最纯粹的渴望。沙子细腻，是绝佳的亲子互动时光。" 
+                    },
+                    { 
+                        name: "日月贝最美日落", 
+                        desc: "傍晚时分前往野狸岛，近距离观赏中国唯一建在海岛上的大剧院——日月贝。", 
+                        kidsTip: "🚶 步行距离：中等（1-2公里散步）。 | 🛒 推车建议：强烈建议。海边广场平坦宽阔，推着妹妹吹海风看夜景极其惬意。",
+                        highlight: "退潮时和亮灯时的双重美景，非常适合拍摄震撼的全家福剪影。" 
+                    }
+                ],
+                transfers: "棕泉酒店 🚗 爱情邮局 🚲 城市阳台 🚗 日月贝",
+                food: [
+                    { name: "莆田餐厅 (城市阳台店)", tag: "环境最佳", tagColor: "emerald", desc: "米其林一星餐厅，就在海边商场内，冷气足。口味极致清淡鲜美，百秒黄花鱼、兴化米粉简直是为长辈量身定制。" },
+                    { name: "文通冰室 (城市阳台店)", tag: "便捷风味", tagColor: "blue", desc: "就在骑行途中的商场里。提供经典的港式简餐和冰饮，上菜快，氛围轻松，能迅速缓解一上午骑行的炎热。" },
+                    { name: "枫记烧耗 / 椰子鸡火锅", tag: "夜市特色", tagColor: "amber", desc: "晚上在日月贝看完夜景后，可选择老字号烧烤大排档感受烟火气，或选择椰子鸡火锅，清甜下火，老少皆宜。" }
+                ]
+            },
+            {
+                id: 5,
+                date: "4月3日",
+                title: "桂山岛（防晕船重中之重）",
+                weather: {
+                    temp: "22℃ / 25℃ 海上可能有风浪，岛上日晒强",
+                    icon: "🌬️",
+                    clothing: "【乘船穿衣】船舱冷气大且甲板风大，需穿防风外套；【户外穿衣】岛上几乎无树荫遮挡，必须换上短袖+极致防晒装备。傍晚海鲜市场路滑，务必穿防滑鞋！"
+                },
+                highlights: [
+                    { 
+                        name: "乘风破浪赴海岛", 
+                        desc: "09:00乘船。⚠️极其重要：早上8点必须给老人和孩子贴好耳后晕船贴，早餐只吃7分饱，绝对禁油腻！", 
+                        kidsTip: "🚶 步行距离：较少。 | 🛒 推车建议：建议使用。码头登船通道较长，推车到船舱口后再折叠收纳最为省力。",
+                        highlight: "50分钟的航程体验真正的海上穿梭，沿途可以欣赏壮阔的伶仃洋风光。" 
+                    },
+                    { 
+                        name: "环岛风光与灯塔打卡", 
+                        desc: "下午漫步桂山舰纪念公园的沿海木栈道，前往一号防波堤尽头的红色灯塔拍照。", 
+                        kidsTip: "🚶 步行距离：较多（含部分坡道台阶）。 | 🛒 推车建议：视情况。防波堤好推，但公园部分木栈道/礁石路推行困难，可能需要爸爸抱娃扛车。",
+                        highlight: "一面是山一面是海，红色灯塔具有极强的日系唯美感，是岛上最出片的文艺地标。" 
+                    },
+                    { 
+                        name: "海鲜市场砍价加工", 
+                        desc: "傍晚重头戏，爸爸负责去市场挑选新鲜的石斑鱼、花蟹、皮皮虾，拿到旁边的餐厅付加工费制作。", 
+                        kidsTip: "🚶 步行距离：较少。 | 🛒 推车建议：⚠️强烈不建议！海鲜市场人多拥挤且地面充满水渍极滑，推车寸步难行，务必由大人紧紧牵着孩子。",
+                        highlight: "体验最原汁原味的渔民生活，现买现做的新鲜度是城市餐厅无法比拟的。" 
+                    }
+                ],
+                transfers: "棕泉酒店 🚗 香洲港 🚢 桂山岛",
+                food: [
+                    { name: "海鲜市场现购代加工", tag: "绝赞特色", tagColor: "amber", desc: "来海岛的必体验项目！自己挑海鲜的乐趣十足，加工要求清蒸或葱姜炒。注意：爷爷奶奶一定要牵好孩子，市场地面湿滑！" },
+                    { name: "里苑酒店内餐厅", tag: "环境最佳", tagColor: "emerald", desc: "如果长辈觉得去海鲜市场太折腾、气味太大，可以直接在入住的里苑酒店内点餐，环境整洁，菜品品质有保障。" },
+                    { name: "码头新记美食 / 云吞面", tag: "距离最近", tagColor: "blue", desc: "上午刚下船或者最后一天赶船前的最佳选择。一碗热腾腾的港式云吞面或糖水，能有效抚平坐船的胃部不适。" }
+                ]
+            },
+            {
+                id: 6,
+                date: "4月4日",
+                title: "平稳返京（防大温差）",
+                weather: {
+                    temp: "珠海22℃ ✈️ 北京5℃ (深夜极冷)",
+                    icon: "❄️",
+                    clothing: "【极端温差预警】白天在岛上依然是短袖春装，但【随身大背包】里必须提前塞满全家最厚的冬装/羽绒服。飞机降落前半小时，务必在机舱内立刻换上，以防落地受寒！"
+                },
+                highlights: [
+                    { 
+                        name: "岛上慢时光", 
+                        desc: "上午不安排紧凑行程，在海岛上随意走走，呼吸新鲜空气。爸爸需密切关注港口复航/停航信息。", 
+                        kidsTip: "🚶 步行距离：随意。 | 🛒 推车建议：建议使用。推着妹妹在酒店周边或海边平滑道路上漫步休息。",
+                        highlight: "享受假期的最后闲暇，没有时间压力的慢节奏最适合老人放松。" 
+                    },
+                    { 
+                        name: "水陆空多重接驳", 
+                        desc: "15:20乘船离岛抵达九洲港，随后乘坐提前预定好的7座商务车直奔金湾机场。", 
+                        kidsTip: "🚶 步行距离：中等（多次换乘）。 | 🛒 推车建议：🌟强烈建议。转船、转车、转飞机过程中，推车能极大减轻大人的抱娃压力。",
+                        highlight: "无缝衔接的交通安排，让全家人不需要拉着行李在路边暴晒等车。" 
+                    },
+                    { 
+                        name: "深夜平安归家", 
+                        desc: "23:40落地北京大兴。爸爸取车，全家上车，孩子们可以继续在车里熟睡，由爸爸平稳驾驶返回大厂。", 
+                        kidsTip: "🚶 步行距离：极少。 | 🛒 推车建议：视情况。大兴机场半夜人少，可直接将熟睡的妹妹推到停车场装车。",
+                        highlight: "自驾的优势在这一刻体现，避免了深夜找车的痛苦，为完美的旅程画上句号。" 
+                    }
+                ],
+                transfers: "桂山岛 🚢 九洲港 🚗 珠海金湾 ✈️ 大兴机场 🚗 廊坊大厂",
+                food: [
+                    { name: "大厂温馨的家", tag: "终极环境", tagColor: "emerald", desc: "凌晨2点到家后，妈妈提前备好的热汤面或一碗热腾腾的白米粥，配点小菜，绝对是治愈全家旅途疲惫的最强美食。" },
+                    { name: "岛上码头简餐", tag: "距离最近", tagColor: "blue", desc: "中午在离岛前，就在码头附近的粉面馆简单吃一口，节省时间，避免错过度船。" },
+                    { name: "珠海机场麦当劳/真功夫", tag: "快捷饱腹", tagColor: "amber", desc: "机场内餐饮选择少且贵，这几家连锁店出餐极快且有热汤热饭，是登机前垫肚子的最稳妥选择。" }
+                ]
+            }
+        ];
+
+        function initTabs() {
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.tab-btn').forEach(b => {
+                        b.classList.remove('tab-active');
+                        b.classList.add('tab-inactive', 'text-slate-600');
+                    });
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+                    
+                    btn.classList.add('tab-active');
+                    btn.classList.remove('tab-inactive', 'text-slate-600');
+                    const targetId = btn.getAttribute('data-target');
+                    document.getElementById(targetId).classList.remove('hidden');
+                });
+            });
+        }
+
+        function renderDaySelector() {
+            const container = document.getElementById('day-selector-container');
+            container.innerHTML = '';
+            
+            itineraryData.forEach(day => {
+                const btn = document.createElement('button');
+                btn.className = `day-btn block w-full text-left px-4 md:px-6 py-3 md:py-4 border-b border-transparent hover:bg-sky-50 ${appState.currentDay === day.id ? 'day-active' : ''}`;
+                btn.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="text-[10px] md:text-xs text-slate-500 mb-1 font-semibold uppercase tracking-wider">Day ${day.id} | ${day.date}</div>
+                            <div class="font-bold text-sm md:text-base ${appState.currentDay === day.id ? 'text-sky-800' : 'text-slate-700'}">${day.title}</div>
+                        </div>
+                        <div class="text-xl md:text-2xl">${appState.currentDay === day.id ? day.weather.icon : ''}</div>
+                    </div>
+                `;
+                btn.addEventListener('click', () => {
+                    appState.currentDay = day.id;
+                    renderDaySelector(); 
+                    renderDayContent();
+                    
+                    // 移动端点击后自动滚动到详情区
+                    if (window.innerWidth < 1024) {
+                        setTimeout(() => {
+                            const displayArea = document.getElementById('day-content-display');
+                            const offset = 20;
+                            const bodyRect = document.body.getBoundingClientRect().top;
+                            const elementRect = displayArea.getBoundingClientRect().top;
+                            const elementPosition = elementRect - bodyRect;
+                            window.scrollTo({
+                                top: elementPosition - offset,
+                                behavior: 'smooth'
+                            });
+                        }, 50);
+                    }
+                });
+                container.appendChild(btn);
+            });
+        }
+
+        function renderDayContent() {
+            const container = document.getElementById('day-content-display');
+            const day = itineraryData.find(d => d.id === appState.currentDay);
+            
+            if(!day) return;
+
+            // Render Highlights with bubble style
+            let highlightsHtml = day.highlights.map(h => `
+                <div class="mb-4 md:mb-5 bg-white border border-slate-100 rounded-2xl md:rounded-3xl p-4 md:p-5 shadow-sm relative overflow-hidden transition-all hover:shadow-md">
+                    <div class="absolute top-0 left-0 w-1 md:w-2 h-full bg-gradient-to-b from-sky-400 to-teal-400"></div>
+                    <h5 class="font-extrabold text-sky-800 text-base md:text-lg mb-2">${h.name}</h5>
+                    <p class="text-slate-600 text-xs md:text-sm mb-3 leading-relaxed">${h.desc}</p>
+                    ${h.kidsTip ? `
+                    <div class="bg-pink-50/70 border border-pink-100 text-pink-800 text-xs px-3 py-2 md:px-4 md:py-3 rounded-xl md:rounded-2xl font-medium mb-2 md:mb-3 flex items-start shadow-sm">
+                        <span class="mr-1 md:mr-2 text-sm md:text-base leading-none">👶</span>
+                        <span class="leading-relaxed"><strong>带娃指引：</strong>${h.kidsTip}</span>
+                    </div>
+                    ` : ''}
+                    <div class="bg-cyan-50/70 border border-cyan-100 text-cyan-800 text-xs px-3 py-2 md:px-4 md:py-3 rounded-xl md:rounded-2xl font-medium flex items-start shadow-sm">
+                        <span class="mr-1 md:mr-2 text-sm md:text-base leading-none">✨</span>
+                        <span class="leading-relaxed"><strong>行程亮点：</strong>${h.highlight}</span>
+                    </div>
+                </div>
+            `).join('');
+
+            // Render Food options with softer tags
+            const tagColors = {
+                blue: 'bg-blue-100 text-blue-800 border-blue-200',
+                emerald: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+                amber: 'bg-amber-100 text-amber-800 border-amber-200'
+            };
+
+            let foodHtml = day.food.map(f => `
+                <div class="bg-slate-50/80 border border-slate-100 rounded-xl md:rounded-2xl p-3 md:p-4 transition-all hover:-translate-y-1 hover:shadow-md">
+                    <div class="flex items-center justify-between mb-2 pb-2 border-b border-slate-200/60">
+                        <span class="font-bold text-sm md:text-base text-slate-800">${f.name}</span>
+                        <span class="text-[10px] px-2 py-0.5 md:py-1 rounded-full border ${tagColors[f.tagColor]} font-bold shadow-sm whitespace-nowrap ml-2">${f.tag}</span>
+                    </div>
+                    <p class="text-[11px] md:text-xs text-slate-600 leading-relaxed">${f.desc}</p>
+                </div>
+            `).join('');
+
+            container.innerHTML = `
+                <div class="flex flex-row items-center justify-between border-b-2 border-slate-100 pb-4 md:pb-5 mb-6 md:mb-8">
+                    <div class="pr-2">
+                        <h3 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-sky-900 mb-1 leading-tight">Day ${day.id} : ${day.title}</h3>
+                        <p class="text-slate-500 font-medium text-xs md:text-sm">🗓️ 日期：${day.date}</p>
+                    </div>
+                    <div class="text-4xl sm:text-5xl md:text-6xl drop-shadow-md animate-pulse shrink-0">${day.weather.icon}</div>
+                </div>
+
+                <!-- Weather & Clothing Block -->
+                <div class="bg-gradient-to-br from-sky-50 to-blue-50 border border-sky-100 rounded-2xl md:rounded-3xl p-4 md:p-6 mb-6 md:mb-8 shadow-sm relative overflow-hidden">
+                    <div class="absolute -right-4 -bottom-4 text-6xl md:text-8xl opacity-10">☀️</div>
+                    <div class="flex flex-col sm:flex-row sm:items-center mb-3 md:mb-4 relative z-10">
+                        <div class="flex items-center">
+                            <span class="bg-sky-200/50 p-1.5 md:p-2 rounded-lg md:rounded-xl text-lg md:text-xl mr-2 md:mr-3">🌡️</span>
+                            <h4 class="font-bold text-sky-900 text-base md:text-lg">天气与穿衣指南</h4>
+                        </div>
+                        <span class="mt-2 sm:mt-0 sm:ml-auto bg-white/60 px-2 md:px-3 py-1 rounded-full text-sky-800 font-bold text-sm md:text-base shadow-sm border border-sky-100 inline-block w-max">${day.weather.temp}</span>
+                    </div>
+                    <div class="text-xs md:text-sm text-slate-700 leading-relaxed bg-white/40 p-3 md:p-4 rounded-xl md:rounded-2xl relative z-10 border border-white/50">
+                        ${day.weather.clothing.replace(/【/g, '<strong class="text-sky-800 bg-sky-100/80 px-1.5 md:px-2 py-0.5 rounded-md border border-sky-200 mr-1 shadow-sm inline-block mt-1">').replace(/】/g, '</strong>')}
+                    </div>
+                </div>
+
+                <div class="mb-6 md:mb-8 bg-amber-50/60 border border-amber-100 rounded-2xl md:rounded-3xl p-4 md:p-5 shadow-sm">
+                    <h4 class="font-bold text-base md:text-lg text-amber-900 mb-2 md:mb-3 flex items-center"><span class="bg-amber-200/50 p-1 md:p-1.5 rounded-lg mr-2">🚗</span> 路线转移</h4>
+                    <div class="bg-white/60 rounded-xl md:rounded-2xl p-3 md:p-4 text-xs md:text-sm text-amber-800 font-bold flex flex-wrap items-center gap-1 md:gap-2">
+                        ${day.transfers.split(' ').map(item => {
+                            if (['🚗', '✈️', '🚶', '🚲', '🚢'].includes(item)) {
+                                return `<span class="text-lg md:text-xl mx-0.5 md:mx-1">${item}</span>`;
+                            }
+                            return `<span class="bg-white px-2 md:px-3 py-1 rounded-full border border-amber-100 shadow-sm">${item}</span>`;
+                        }).join('')}
+                    </div>
+                </div>
+
+                <div class="mb-8 md:mb-10">
+                    <h4 class="font-bold text-lg md:text-xl text-slate-800 mb-4 md:mb-5 flex items-center"><span class="bg-teal-100 text-teal-600 p-1 md:p-1.5 rounded-lg mr-2">🎯</span> 核心活动与亮点</h4>
+                    <div class="flex flex-col">
+                        ${highlightsHtml}
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-lg md:text-xl text-slate-800 mb-4 md:mb-5 flex items-center"><span class="bg-orange-100 text-orange-600 p-1 md:p-1.5 rounded-lg mr-2">🍽️</span> 每日元气美食库</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-5">
+                        ${foodHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        function initWeatherChart() {
+            const ctx = document.getElementById('weatherChart').getContext('2d');
+            
+            const labels = ['D1 (3.30)', 'D2 (3.31)', 'D3 (4.1)', 'D4 (4.2)', 'D5 (4.3)', 'D6 (落地北京)'];
+            const temps = [24, 25, 24, 24, 25, 5];
+
+            // 加入渐变色
+            let gradient = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, 'rgba(14, 165, 233, 0.4)'); // sky-500
+            gradient.addColorStop(1, 'rgba(14, 165, 233, 0.0)');
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '预估最高气温 (℃)',
+                        data: temps,
+                        borderColor: '#0ea5e9', // sky-500
+                        backgroundColor: gradient,
+                        borderWidth: 4,
+                        pointBackgroundColor: '#f59e0b', // amber-500
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 3,
+                        pointRadius: 6,
+                        pointHoverRadius: 9,
+                        fill: true,
+                        tension: 0.4 // 增加曲线柔和度
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                            titleColor: '#0f172a',
+                            bodyColor: '#334155',
+                            borderColor: '#e2e8f0',
+                            borderWidth: 1,
+                            titleFont: { size: 14, weight: 'bold' },
+                            bodyFont: { size: 14, weight: '500' },
+                            padding: 12,
+                            boxPadding: 6,
+                            cornerRadius: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) { label += ': '; }
+                                    if (context.parsed.y !== null) {
+                                        label += context.parsed.y + '℃';
+                                        if(context.dataIndex === 5) {
+                                            label += ' (极度降温⚠️)';
+                                        }
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 0,
+                            max: 30,
+                            grid: { color: '#f1f5f9', drawBorder: false },
+                            ticks: {
+                                color: '#64748b',
+                                font: { size: 12, weight: '500' },
+                                callback: function(value) { return value + '℃'; }
+                            }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: {
+                                color: '#64748b',
+                                font: { size: 12, weight: 'bold' },
+                                maxRotation: 0,
+                                minRotation: 0
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initTabs();
+            renderDaySelector();
+            renderDayContent();
+            initWeatherChart();
+        });
+    </script>
+</body>
+</html>
